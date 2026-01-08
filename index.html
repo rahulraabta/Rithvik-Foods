@@ -1,0 +1,1078 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rithvik Foods | Pure, Authentic, Homemade</title>
+    <meta name="description"
+        content="Authentic homemade Indian masala powders and spices. 100% Pure, No Artificial Colors or Preservatives.">
+    <link rel="stylesheet" href="styles.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Playfair+Display:wght@400;700&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container nav-container">
+            <a href="#" class="nav-logo">
+                <img src="mandala.png" alt="Rithvik Foods">
+                <span>Rithvik Foods</span>
+            </a>
+            <div class="menu-toggle" onclick="toggleMenu()">☰</div>
+            <ul class="nav-links">
+                <li><a href="#home" class="nav-link">Home</a></li>
+                <li><a href="#about" class="nav-link">Our Story</a></li>
+                <li><a href="#products" class="nav-link">Shop</a></li>
+                <li><a href="#contact" class="nav-link">Contact</a></li>
+                <li>
+                    <a href="#" onclick="openCart(); return false;" class="nav-link cart-link">
+                        🛒 <span id="cart-count" class="cart-count">0</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" onclick="openAuthModal(); return false;" class="nav-link" id="authLink">Login</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header id="home" class="hero">
+        <div class="container hero-content animate-on-scroll">
+            <h1>Nature’s Best, <br>Handmade for You</h1>
+            <p class="hero-tagline">Authentic Masala & Spices made with 100% Pure Ingredients.</p>
+            <div class="cta-group">
+                <a href="#products" class="btn btn-primary">Explore Products</a>
+                <a href="#about" class="btn btn-secondary">Our Promise</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Story Section -->
+    <section id="about" class="story-section text-center">
+        <div class="container">
+            <h2 class="section-title animate-on-scroll">The Taste of Tradition</h2>
+            <p class="animate-on-scroll" style="max-width: 700px; margin: 0 auto;">
+                At <strong>Rithvik Foods</strong>, we believe in the power of authentic flavors. Our recipes are passed
+                down through generations, ensuring you get the true taste of home in every pinch. We grind our spices in
+                small batches to preserve their natural aroma and nutritional value.
+            </p>
+        </div>
+    </section>
+
+    <!-- Benefits Section -->
+    <section class="benefits-section">
+        <div class="container">
+            <h2 class="section-title text-center animate-on-scroll">Why Choose Us?</h2>
+            <div class="benefits-grid">
+                <div class="benefit-card animate-on-scroll">
+                    <span class="benefit-icon">🌿</span>
+                    <h3>100% Natural</h3>
+                    <p>Absolutely no artificial colors, additives, or chemicals. Just pure spice.</p>
+                </div>
+                <div class="benefit-card animate-on-scroll">
+                    <span class="benefit-icon">🏡</span>
+                    <h3>Homemade</h3>
+                    <p>Made with love in a traditional home kitchen setup for authentic taste.</p>
+                </div>
+                <div class="benefit-card animate-on-scroll">
+                    <span class="benefit-icon">🛡️</span>
+                    <h3>No Preservatives</h3>
+                    <p>Freshly packed with a shelf life of 5 months naturally.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Products Section -->
+    <section id="products" class="products-section">
+        <div class="container">
+            <h2 class="section-title text-center animate-on-scroll">Our Collection</h2>
+            <p class="text-center animate-on-scroll">Crafted for the perfect meal.</p>
+
+            <!-- Category Navigation Grid -->
+            <div class="category-grid">
+                <div class="category-card" onclick="showCategory('health')">
+                    <img src="cat_health.jpg" alt="Health Powder">
+                    <h3>Health Powder</h3>
+                </div>
+                <div class="category-card" onclick="showCategory('premix')">
+                    <img src="cat_premix.jpg" alt="Premix">
+                    <h3>Premix</h3>
+                </div>
+                <div class="category-card" onclick="showCategory('masala')">
+                    <img src="bisi_bele.png" alt="Masala Powder">
+                    <h3>Masala Powder</h3>
+                </div>
+                <div class="category-card" onclick="showCategory('chutney')">
+                    <img src="cat_chutney.jpg" alt="Chutney Powder">
+                    <h3>Chutney Powder</h3>
+                </div>
+            </div>
+
+            <div class="product-grid">
+
+                <!-- 1. Health Powder Section -->
+                <div id="cat-health" class="product-section">
+                    <h3 class="product-category-title">Health Powder</h3>
+
+                    <!-- Amla Powder -->
+                    <div class="product-card animate-on-scroll">
+                        <img src="amla_juice.png" alt="Amla Juice Powder" class="product-img">
+                        <div class="product-info">
+                            <div>
+                                <span class="badge-natural">Healthy</span>
+                                <h3 class="product-title">Amla Juice Powder</h3>
+                                <p>Immunity booster rich in Vitamin C and antioxidants.</p>
+                            </div>
+                            <div style="margin-bottom: 10px;">
+                                <span style="font-size: 1.1rem; font-weight: 700; color: #2E7D32;">₹149</span> <span
+                                    style="font-size: 0.9rem; color: #757575;">(100gm)</span>
+                                <br><span class="shipping-text">+ shipping charges</span>
+                            </div>
+                            <div class="quantity-wrapper">
+                                <button class="qty-btn" onclick="adjustQty('amla', -1)">-</button>
+                                <span id="qty-amla" class="qty-display">1</span>
+                                <button class="qty-btn" onclick="adjustQty('amla', 1)">+</button>
+                            </div>
+                            <button onclick="addToCart('Amla Juice Powder', 149, 'qty-amla')" class="btn btn-whatsapp"
+                                style="width: 100%; border: none;">Add to Cart</button>
+                        </div>
+                    </div>
+
+                    <!-- ABC Malt Powder -->
+                    <div class="product-card animate-on-scroll">
+                        <img src="abc_malt.jpg" alt="ABC Malt Powder" class="product-img">
+                        <div class="product-info">
+                            <div>
+                                <span class="badge-natural">Nutritious</span>
+                                <h3 class="product-title">ABC Malt Powder</h3>
+                                <p>Apple Beetroot Carrot natural health mix.</p>
+                            </div>
+                            <span class="btn btn-disabled">Available Soon</span>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- 2. Premix Section -->
+                <div id="cat-premix" class="product-section">
+                    <h3 class="product-category-title">Premix</h3>
+
+                    <!-- Ragi Dosa Premix -->
+                    <div class="product-card animate-on-scroll">
+                        <img src="ragi_premix.png" alt="Ragi Dosa Premix" class="product-img">
+                        <div class="product-info">
+                            <div>
+                                <span class="badge-natural">Instant</span>
+                                <h3 class="product-title">Ragi Dosa & Idli Premix</h3>
+                                <p>Healthy millet breakfast ready in minutes.</p>
+                            </div>
+                            <div style="margin-bottom: 10px;">
+                                <span style="font-size: 1.1rem; font-weight: 700; color: #2E7D32;">₹59</span> <span
+                                    style="font-size: 0.9rem; color: #757575;">(250gm)</span>
+                                <br><span class="shipping-text">+ shipping charges</span>
+                            </div>
+                            <div class="quantity-wrapper">
+                                <button class="qty-btn" onclick="adjustQty('ragi', -1)">-</button>
+                                <span id="qty-ragi" class="qty-display">1</span>
+                                <button class="qty-btn" onclick="adjustQty('ragi', 1)">+</button>
+                            </div>
+                            <button onclick="addToCart('Ragi Dosa & Idli Premix', 59, 'qty-ragi')"
+                                class="btn btn-whatsapp" style="width: 100%; border: none;">Add to Cart</button>
+                        </div>
+                    </div>
+
+                    <!-- Rava Idli Premix -->
+                    <div class="product-card animate-on-scroll">
+                        <img src="rava_idli.jpg" alt="Rava Idli Premix" class="product-img">
+                        <div class="product-info">
+                            <div>
+                                <span class="badge-natural">Tasty</span>
+                                <h3 class="product-title">Rava Idli Premix</h3>
+                                <p>Instant mix for fluffy and soft Rava Idlis.</p>
+                            </div>
+                            <div style="margin-bottom: 10px;">
+                                <span style="font-size: 1.1rem; font-weight: 700; color: #2E7D32;">₹69</span> <span
+                                    style="font-size: 0.9rem; color: #757575;">(250gm)</span>
+                                <br><span class="shipping-text">+ shipping charges</span>
+                            </div>
+                            <div class="quantity-wrapper">
+                                <button class="qty-btn" onclick="adjustQty('rava', -1)">-</button>
+                                <span id="qty-rava" class="qty-display">1</span>
+                                <button class="qty-btn" onclick="adjustQty('rava', 1)">+</button>
+                            </div>
+                            <button onclick="addToCart('Rava Idli Premix', 69, 'qty-rava')" class="btn btn-whatsapp"
+                                style="width: 100%; border: none;">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- 3. Masala Powder Section -->
+                <div id="cat-masala" class="product-section">
+                    <h3 class="product-category-title">Masala Powder</h3>
+
+                    <!-- Vangi Bath Powder -->
+                    <div class="product-card animate-on-scroll">
+                        <img src="vangi_bath.png" alt="Vangi Bath Powder" class="product-img">
+                        <div class="product-info">
+                            <div>
+                                <span class="badge-natural">Best Seller</span>
+                                <h3 class="product-title">Vangi Bath Powder</h3>
+                                <p>Authentic blend for the perfect brinjal rice dish.</p>
+                            </div>
+                            <div style="margin-bottom: 10px;">
+                                <span style="font-size: 1.1rem; font-weight: 700; color: #2E7D32;">₹79</span> <span
+                                    style="font-size: 0.9rem; color: #757575;">(100gm)</span>
+                                <br><span class="shipping-text">+ shipping charges</span>
+                            </div>
+                            <div class="quantity-wrapper">
+                                <button class="qty-btn" onclick="adjustQty('vangi', -1)">-</button>
+                                <span id="qty-vangi" class="qty-display">1</span>
+                                <button class="qty-btn" onclick="adjustQty('vangi', 1)">+</button>
+                            </div>
+                            <button onclick="addToCart('Vangi Bath Powder', 79, 'qty-vangi')" class="btn btn-whatsapp"
+                                style="width: 100%; border: none;">Add to Cart</button>
+                        </div>
+                    </div>
+
+                    <!-- Bisi Bele Bath Powder -->
+                    <div class="product-card animate-on-scroll">
+                        <img src="bisi_bele.png" alt="Bisi Bele Bath Powder" class="product-img">
+                        <div class="product-info">
+                            <div>
+                                <span class="badge-natural">Premium</span>
+                                <h3 class="product-title">Bisi Bele Bath Powder</h3>
+                                <p>Aromatic spices for the classic lentil-rice delicacy.</p>
+                            </div>
+                            <div style="margin-bottom: 10px;">
+                                <span style="font-size: 1.1rem; font-weight: 700; color: #2E7D32;">₹89</span> <span
+                                    style="font-size: 0.9rem; color: #757575;">(100gm)</span>
+                                <br><span class="shipping-text">+ shipping charges</span>
+                            </div>
+                            <div class="quantity-wrapper">
+                                <button class="qty-btn" onclick="adjustQty('bibi', -1)">-</button>
+                                <span id="qty-bibi" class="qty-display">1</span>
+                                <button class="qty-btn" onclick="adjustQty('bibi', 1)">+</button>
+                            </div>
+                            <button onclick="addToCart('Bisi Bele Bath Powder', 89, 'qty-bibi')"
+                                class="btn btn-whatsapp" style="width: 100%; border: none;">Add to Cart</button>
+                        </div>
+                    </div>
+
+                    <!-- Puliyogare Powder -->
+                    <div class="product-card animate-on-scroll">
+                        <img src="puliyogare.png" alt="Puliyogare Powder" class="product-img">
+                        <div class="product-info">
+                            <div>
+                                <span class="badge-natural">Tangy</span>
+                                <h3 class="product-title">Puliyogare Powder</h3>
+                                <p>Traditional tamarind rice mix with authentic spices.</p>
+                            </div>
+                            <div style="margin-bottom: 10px;">
+                                <span style="font-size: 1.1rem; font-weight: 700; color: #2E7D32;">₹79</span> <span
+                                    style="font-size: 0.9rem; color: #757575;">(100gm)</span>
+                                <br><span class="shipping-text">+ shipping charges</span>
+                            </div>
+                            <div class="quantity-wrapper">
+                                <button class="qty-btn" onclick="adjustQty('puli', -1)">-</button>
+                                <span id="qty-puli" class="qty-display">1</span>
+                                <button class="qty-btn" onclick="adjustQty('puli', 1)">+</button>
+                            </div>
+                            <button onclick="addToCart('Puliyogare Powder', 79, 'qty-puli')" class="btn btn-whatsapp"
+                                style="width: 100%; border: none;">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- 4. Chutney Powder Section -->
+                <div id="cat-chutney" class="product-section">
+                    <h3 class="product-category-title">Chutney Powder</h3>
+
+                    <!-- Kadlebele Chutney -->
+                    <div class="product-card animate-on-scroll">
+                        <img src="kadlebele.jpg" alt="Kadlebele Chutney Powder" class="product-img" loading="lazy">
+                        <div class="product-info">
+                            <div>
+                                <span class="badge-natural">Spicy</span>
+                                <h3 class="product-title">Kadlebele Chutney Powder</h3>
+                                <p>Flavorful Channadaal spice mix for rice and dosa.</p>
+                            </div>
+                            <div style="margin-bottom: 10px;">
+                                <span style="font-size: 1.1rem; font-weight: 700; color: #2E7D32;">₹69</span> <span
+                                    style="font-size: 0.9rem; color: #757575;">(100gm)</span>
+                                <br><span class="shipping-text">+ shipping charges</span>
+                            </div>
+                            <div class="quantity-wrapper">
+                                <button class="qty-btn" onclick="adjustQty('kadle', -1)">-</button>
+                                <span id="qty-kadle" class="qty-display">1</span>
+                                <button class="qty-btn" onclick="adjustQty('kadle', 1)">+</button>
+                            </div>
+                            <button onclick="addToCart('Kadlebele Chutney Powder', 69, 'qty-kadle')"
+                                class="btn btn-whatsapp" style="width: 100%; border: none;">Add to Cart</button>
+                        </div>
+                    </div>
+
+                    <!-- Huchellu Chutney -->
+                    <div class="product-card animate-on-scroll">
+                        <img src="huchellu.jpg" alt="Huchellu Chutney Powder" class="product-img">
+                        <div class="product-info">
+                            <div>
+                                <span class="badge-natural">Traditional</span>
+                                <h3 class="product-title">Huchellu Chutney Powder (Niger Seeds)</h3>
+                                <p>Rustic and aromatic powder made from Niger seeds.</p>
+                            </div>
+                            <div style="margin-bottom: 10px;">
+                                <span style="font-size: 1.1rem; font-weight: 700; color: #2E7D32;">₹79</span> <span
+                                    style="font-size: 0.9rem; color: #757575;">(100gm)</span>
+                                <br><span class="shipping-text">+ shipping charges</span>
+                            </div>
+                            <div class="quantity-wrapper">
+                                <button class="qty-btn" onclick="adjustQty('huch', -1)">-</button>
+                                <span id="qty-huch" class="qty-display">1</span>
+                                <button class="qty-btn" onclick="adjustQty('huch', 1)">+</button>
+                            </div>
+                            <button onclick="addToCart('Huchellu Chutney Powder', 79, 'qty-huch')"
+                                class="btn btn-whatsapp" style="width: 100%; border: none;">Add to Cart</button>
+                        </div>
+                    </div>
+
+                    <!-- Karibevu Chutney -->
+                    <div class="product-card animate-on-scroll">
+                        <img src="karibevu.jpg" alt="Karibevu Chutney Powder" class="product-img">
+                        <div class="product-info">
+                            <div>
+                                <span class="badge-natural">Aromatic</span>
+                                <h3 class="product-title">Karibevu Chutney Powder (Curry Leaves)</h3>
+                                <p>Healthy curry leaves spice blend.</p>
+                            </div>
+                            <div style="margin-bottom: 10px;">
+                                <span style="font-size: 1.1rem; font-weight: 700; color: #2E7D32;">₹79</span> <span
+                                    style="font-size: 0.9rem; color: #757575;">(100gm)</span>
+                                <br><span class="shipping-text">+ shipping charges</span>
+                            </div>
+                            <div class="quantity-wrapper">
+                                <button class="qty-btn" onclick="adjustQty('kari', -1)">-</button>
+                                <span id="qty-kari" class="qty-display">1</span>
+                                <button class="qty-btn" onclick="adjustQty('kari', 1)">+</button>
+                            </div>
+                            <button onclick="addToCart('Karibevu Chutney Powder', 79, 'qty-kari')"
+                                class="btn btn-whatsapp" style="width: 100%; border: none;">Add to Cart</button>
+                        </div>
+                    </div>
+
+                    <!-- Moringa Chutney -->
+                    <div class="product-card animate-on-scroll">
+                        <img src="moringa.jpg" alt="Moringa Chutney Powder" class="product-img">
+                        <div class="product-info">
+                            <div>
+                                <span class="badge-natural">Superfood</span>
+                                <h3 class="product-title">Moringa Chutney Powder</h3>
+                                <p>Nutrient-rich drumstick leaves spice powder.</p>
+                            </div>
+                            <div style="margin-bottom: 10px;">
+                                <span style="font-size: 1.1rem; font-weight: 700; color: #2E7D32;">₹89</span> <span
+                                    style="font-size: 0.9rem; color: #757575;">(100gm)</span>
+                                <br><span class="shipping-text">+ shipping charges</span>
+                            </div>
+                            <div class="quantity-wrapper">
+                                <button class="qty-btn" onclick="adjustQty('mori', -1)">-</button>
+                                <span id="qty-mori" class="qty-display">1</span>
+                                <button class="qty-btn" onclick="adjustQty('mori', 1)">+</button>
+                            </div>
+                            <button onclick="addToCart('Moringa Chutney Powder', 89, 'qty-mori')"
+                                class="btn btn-whatsapp" style="width: 100%; border: none;">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Thank You Section -->
+    <section class="thank-you-section text-center">
+        <div class="container">
+            <h2 class="section-title">Thank You for Choosing Us!</h2>
+            <p
+                style="font-size: 1.1rem; max-width: 700px; margin: 0 auto 30px; color: var(--text-light); line-height: 1.8;">
+                Your support means the world to us. At Rithvik Foods, we pour our heart into every batch to ensure you
+                get nothing but the purest, most authentic flavors. We hope our products bring a touch of tradition and
+                health to your daily meals.
+            </p>
+            <div>
+                <span style="font-size: 2rem; color: var(--primary-color);">🌿</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contact" class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column" style="flex: 2;">
+                    <h3>Rithvik Foods</h3>
+                    <p>Bringing the authentic taste of Indian tradition to your kitchen. Pure, homemade, and healthy.
+                    </p>
+                </div>
+                <div class="footer-column">
+                    <h3>Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#products">Products</a></li>
+                        <li><a href="#about">About Us</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Contact Us</h3>
+                    <ul class="footer-links">
+                        <li>📞 <a href="tel:+918431329733" style="color: inherit;">+91 84313 29733</a></li>
+                        <li style="margin-bottom: 10px;">
+                            <i class="fas fa-map-marker-alt"
+                                style="color: var(--accent-color); margin-right: 10px;"></i>
+                            <a href="https://www.google.com/maps/search/?api=1&query=Mysuru+Karnataka+India"
+                                target="_blank">Mysuru, Karnataka, India</a>
+                        </li>
+                        <li>
+                            <i class="fas fa-envelope" style="color: var(--accent-color); margin-right: 10px;"></i>
+                            <a href="mailto:contact@rithvikfoods33@gmail.com">contact@rithvikfoods33@gmail.com</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Cart Modal -->
+    <div id="cartModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeCart()">&times;</span>
+            <h2 class="section-title" style="font-size: 1.5rem; margin-bottom: 15px;">Your Cart</h2>
+            <div id="cartItemsContainer">
+                <p>Your cart is empty.</p>
+            </div>
+            <button onclick="openOrderModal()" class="btn btn-primary" style="width: 100%; margin-top: 10px;">Proceed
+                to Checkout</button>
+        </div>
+    </div>
+
+    <!-- Order Modal (Modified for Cart Checkout via JS) -->
+    <div id="orderModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeOrderModal()">&times;</span>
+            <h2 class="section-title" style="font-size: 1.8rem; margin-bottom: 20px;">Checkout</h2>
+
+            <!-- Order Summary Section -->
+            <div id="checkoutSummary" class="checkout-summary">
+                <!-- Populated by JS -->
+            </div>
+
+            <form id="orderForm" onsubmit="submitOrder(event)">
+                <div class="form-group">
+                    <label for="customerName">Full Name</label>
+                    <input type="text" id="customerName" required placeholder="Enter your name">
+                </div>
+
+                <div class="form-group">
+                    <label for="customerPhone">Phone Number</label>
+                    <input type="tel" id="customerPhone" required placeholder="Enter your mobile number">
+                </div>
+
+                <div class="form-group">
+                    <label for="customerAddress">Delivery Address</label>
+                    <textarea id="customerAddress" required placeholder="Full address with pincode"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="deliveryDate">Preferred Delivery Date</label>
+                    <input type="date" id="deliveryDate" required>
+                </div>
+
+                <button type="submit" id="submitBtn" class="btn btn-primary" style="width: 100%;">Confirm &
+                    Order</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Login/Signup Modal -->
+    <div id="authModal" class="modal">
+        <div class="modal-content" style="max-width: 400px; text-align: center;">
+            <span class="close-btn" onclick="closeAuthModal()">&times;</span>
+
+            <!-- Login View -->
+            <div id="loginView">
+                <h2 class="section-title" style="font-size: 1.8rem; margin-bottom: 20px;">Welcome Back</h2>
+                <form onsubmit="handleLogin(event)">
+                    <div class="form-group">
+                        <label for="loginEmail">Email / Phone</label>
+                        <input type="text" id="loginEmail" required placeholder="Enter email or phone">
+                    </div>
+                    <div class="form-group">
+                        <label for="loginPassword">Password</label>
+                        <input type="password" id="loginPassword" required placeholder="Enter password">
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">Login</button>
+                    <p style="margin-top: 15px; font-size: 0.9rem;">
+                        New here? <a href="#" onclick="switchAuthView('signup')"
+                            style="color: var(--primary-color); font-weight: bold;">Create Account</a>
+                    </p>
+                </form>
+            </div>
+
+            <!-- Signup View -->
+            <div id="signupView" style="display: none;">
+                <h2 class="section-title" style="font-size: 1.8rem; margin-bottom: 20px;">Create Account</h2>
+                <form onsubmit="handleSignup(event)">
+                    <div class="form-group">
+                        <label for="signupName">Full Name</label>
+                        <input type="text" id="signupName" required placeholder="Your Name">
+                    </div>
+                    <div class="form-group">
+                        <label for="signupEmail">Email</label>
+                        <input type="email" id="signupEmail" required placeholder="Your Email">
+                    </div>
+                    <div class="form-group">
+                        <label for="signupPhone">Phone Number</label>
+                        <input type="tel" id="signupPhone" required placeholder="Your Mobile Number">
+                    </div>
+                    <div class="form-group">
+                        <label for="signupPassword">Password</label>
+                        <input type="password" id="signupPassword" required placeholder="Create a strong password">
+                        <small
+                            style="color: #777; font-size: 0.8rem; display: block; text-align: left; margin-top: 5px;">
+                            Must be at least 8 chars, include 1 number & 1 special char.
+                        </small>
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">Sign Up</button>
+                    <p style="margin-top: 15px; font-size: 0.9rem;">
+                        Already have an account? <a href="#" onclick="switchAuthView('login')"
+                            style="color: var(--primary-color); font-weight: bold;">Login</a>
+                    </p>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Simple Scroll Animation Script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const observerOptions = {
+                threshold: 0.1
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, observerOptions);
+
+            // Only animate on larger screens to improve mobile performance
+            if (window.innerWidth > 768) {
+                document.querySelectorAll('.animate-on-scroll').forEach(el => {
+                    observer.observe(el);
+                });
+            } else {
+                // On mobile, just make them visible immediately
+                document.querySelectorAll('.animate-on-scroll').forEach(el => {
+                    el.classList.add('visible');
+                });
+            }
+
+            updateCartUI();
+        });
+
+        // --- Mobile Menu Logic ---
+        function toggleMenu() {
+            const navLinks = document.querySelector('.nav-links');
+            navLinks.classList.toggle('active');
+
+            // Animate links
+            const links = document.querySelectorAll('.nav-links li');
+            links.forEach((link, index) => {
+                if (link.style.animation) {
+                    link.style.animation = '';
+                } else {
+                    link.style.animation = `navLinkFade 0.5s ease forwards ${index / 7 + 0.3}s`;
+                }
+            });
+        }
+
+        // Close menu when clicking a link
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                const navLinks = document.querySelector('.nav-links');
+                if (navLinks.classList.contains('active')) {
+                    toggleMenu();
+                }
+            });
+        });
+
+        // --- Category Toggle Logic ---
+        function showCategory(catId) {
+            // Hide all sections
+            const sections = document.querySelectorAll('.product-section');
+            sections.forEach(section => {
+                section.style.display = 'none';
+                section.classList.remove('active');
+            });
+
+            // Show selected section
+            const selected = document.getElementById('cat-' + catId);
+            if (selected) {
+                selected.style.display = 'grid'; // Ensure grid layout
+                setTimeout(() => selected.classList.add('active'), 10); // Trigger animation
+
+                // Smooth scroll to the section
+                selected.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+
+        // --- Authentication & User Logic ---
+        let currentUser = null; // Holds the logged-in user object
+        let cart = [];
+
+        // 1. Session Management
+        function checkSession() {
+            const sessionUser = localStorage.getItem('rithvik_current_user');
+            if (sessionUser) {
+                currentUser = JSON.parse(sessionUser);
+                updateAuthUI();
+                loadUserCart(); // Load THIS user's cart
+            } else {
+                loadCart(); // Load guest cart
+            }
+        }
+
+        function updateAuthUI() {
+            const authLink = document.getElementById('authLink');
+            if (currentUser) {
+                authLink.innerText = `Hi, ${currentUser.name.split(' ')[0]}`;
+                authLink.onclick = (e) => { e.preventDefault(); confirmLogout(); };
+            } else {
+                authLink.innerText = 'Login';
+                authLink.onclick = (e) => { e.preventDefault(); openAuthModal(); };
+            }
+        }
+
+        function confirmLogout() {
+            if (confirm("Do you want to logout?")) {
+                currentUser = null;
+                localStorage.removeItem('rithvik_current_user');
+                cart = []; // Clear current view
+                updateAuthUI();
+                loadCart(); // Revert to guest cart
+                alert("Logged out successfully.");
+            }
+        }
+
+        // 2. Auth Modal Logic
+        const authModal = document.getElementById('authModal');
+
+        function openAuthModal() {
+            authModal.style.display = 'flex';
+            switchAuthView('login');
+        }
+
+        function closeAuthModal() {
+            authModal.style.display = 'none';
+        }
+
+        function switchAuthView(view) {
+            document.getElementById('loginView').style.display = view === 'login' ? 'block' : 'none';
+            document.getElementById('signupView').style.display = view === 'signup' ? 'block' : 'none';
+        }
+
+        // 3. Signup Handler
+        function handleSignup(e) {
+            e.preventDefault();
+            const name = document.getElementById('signupName').value;
+            const email = document.getElementById('signupEmail').value;
+            const phone = document.getElementById('signupPhone').value;
+            const password = document.getElementById('signupPassword').value;
+
+            // Strong Password Validation
+            const strongPasswordRegex = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,}$/;
+            if (!strongPasswordRegex.test(password)) {
+                alert("Password is too weak!\n- At least 8 characters\n- Include a number\n- Include a special character (!@#$%)");
+                return;
+            }
+
+            // Save User (Simulated DB in LocalStorage)
+            const usersDB = JSON.parse(localStorage.getItem('rithvik_users_db') || '[]');
+
+            // Check duplicate
+            if (usersDB.find(u => u.email === email || u.phone === phone)) {
+                alert("User with this email or phone already exists!");
+                return;
+            }
+
+            // Generate Customer ID (e.g., RF-4821)
+            const customerId = 'RF-' + Math.floor(1000 + Math.random() * 9000);
+
+            const newUser = { id: customerId, name, email, phone, password }; // Note: In real app, never save plain password!
+            usersDB.push(newUser);
+            localStorage.setItem('rithvik_users_db', JSON.stringify(usersDB));
+
+            alert(`Account created successfully!\nYour Customer ID is: ${customerId}\nPlease Login.`);
+            switchAuthView('login');
+        }
+
+        // 4. Login Handler
+        function handleLogin(e) {
+            e.preventDefault();
+            const identifier = document.getElementById('loginEmail').value; // email or phone
+            const password = document.getElementById('loginPassword').value;
+
+            const usersDB = JSON.parse(localStorage.getItem('rithvik_users_db') || '[]');
+
+            const user = usersDB.find(u => (u.email === identifier || u.phone === identifier) && u.password === password);
+
+            if (user) {
+                currentUser = user;
+                localStorage.setItem('rithvik_current_user', JSON.stringify(user)); // Start Session
+                closeAuthModal();
+                updateAuthUI();
+                loadUserCart(); // Load their data
+                alert(`Welcome back, ${user.name}!\nYour ID: ${user.id}`);
+            } else {
+                alert("Invalid Email/Phone or Password.");
+            }
+        }
+
+        // 5. Data Persistence (User Specific)
+        function saveCart() {
+            if (currentUser) {
+                // Save to User's specific storage
+                localStorage.setItem(`rithvik_cart_${currentUser.email}`, JSON.stringify(cart));
+            } else {
+                // Save to Guest storage
+                localStorage.setItem('rithvik_cart', JSON.stringify(cart));
+            }
+        }
+
+        function loadUserCart() {
+            if (!currentUser) return;
+            const savedCart = localStorage.getItem(`rithvik_cart_${currentUser.email}`);
+            if (savedCart) {
+                cart = JSON.parse(savedCart);
+                updateCartUI();
+            } else {
+                cart = []; // Empty if new user
+                updateCartUI();
+            }
+        }
+
+        function loadCart() {
+            const savedCart = localStorage.getItem('rithvik_cart');
+            if (savedCart) {
+                cart = JSON.parse(savedCart);
+                updateCartUI();
+            } else {
+                cart = [];
+                updateCartUI();
+            }
+        }
+
+        // --- Shopping Cart Logic ---
+        // let cart = []; // Moved to auth logic
+
+        // Load Cart and User Details on Startup (Replaced by checkSession)
+        // document.addEventListener('DOMContentLoaded', () => {
+        //     loadCart();
+        //     loadUserDetails();
+        // });
+
+        // function saveCart() { // Modified above
+        //     localStorage.setItem('rithvik_cart', JSON.stringify(cart));
+        // }
+
+        // function loadCart() { // Modified above
+        //     const savedCart = localStorage.getItem('rithvik_cart');
+        //     if (savedCart) {
+        //         cart = JSON.parse(savedCart);
+        //         updateCartUI();
+        //     }
+        // }
+
+        function saveUserDetails(name, phone, address) {
+            const userDetails = { name, phone, address };
+            localStorage.setItem('rithvik_user', JSON.stringify(userDetails));
+        }
+
+        function loadUserDetails() {
+            const savedUser = localStorage.getItem('rithvik_user');
+            if (savedUser) {
+                const user = JSON.parse(savedUser);
+                const nameInput = document.getElementById('customerName');
+                const phoneInput = document.getElementById('customerPhone');
+                const addrInput = document.getElementById('customerAddress');
+
+                if (nameInput) nameInput.value = user.name || '';
+                if (phoneInput) phoneInput.value = user.phone || '';
+                if (addrInput) addrInput.value = user.address || '';
+            }
+        }
+
+        function adjustQty(id, delta) {
+            const qtyEl = document.getElementById('qty-' + id);
+            let currentQty = parseInt(qtyEl.innerText);
+            currentQty += delta;
+            if (currentQty < 1) currentQty = 1;
+            qtyEl.innerText = currentQty;
+        }
+
+        function addToCart(productName, price, qtyId) {
+            const qty = parseInt(document.getElementById(qtyId).innerText);
+
+            // Check if item already exists
+            const existingItem = cart.find(item => item.name === productName);
+            if (existingItem) {
+                existingItem.qty += qty;
+            } else {
+                cart.push({ name: productName, price: price, qty: qty });
+            }
+
+            saveCart(); // Save to storage
+            updateCartUI();
+            alert(`Added ${qty} x ${productName} to Cart!`);
+
+            // Reset quantity display
+            document.getElementById(qtyId).innerText = "1";
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            saveCart(); // Save to storage
+            updateCartUI();
+        }
+
+        function updateCartUI() {
+            // Update Badge
+            const totalItems = cart.reduce((sum, item) => sum + item.qty, 0);
+            document.getElementById('cart-count').innerText = totalItems;
+
+
+            // Update Modal Content
+            const container = document.getElementById('cartItemsContainer');
+            if (cart.length === 0) {
+                container.innerHTML = '<p style="text-align:center; padding: 20px;">Your cart is empty.</p>';
+                return;
+            }
+
+            let html = '<table class="cart-table"><thead><tr><th>Item</th><th>Qty</th><th>Price</th><th>Action</th></tr></thead><tbody>';
+            let grandTotal = 0;
+
+            cart.forEach((item, index) => {
+                const itemTotal = item.price * item.qty;
+                grandTotal += itemTotal;
+                html += `<tr>
+                    <td>${item.name}</td>
+                    <td>${item.qty}</td>
+                    <td>₹${itemTotal}</td>
+                    <td><button class="btn-remove" onclick="removeFromCart(${index})">Remove</button></td>
+                </tr>`;
+            });
+
+            const shipping = 39;
+            const finalTotal = grandTotal + shipping;
+
+            html += `</tbody></table>`;
+            html += `<div class="cart-total-row">Subtotal: ₹${grandTotal}</div>`;
+            html += `<div class="cart-total-row" style="font-size: 0.9rem; color: #666;">Shipping: ₹${shipping}</div>`;
+            html += `<div class="cart-total-row" style="color: var(--primary-color); font-size: 1.3rem;">Total: ₹${finalTotal}</div>`;
+
+            container.innerHTML = html;
+        }
+
+        // --- Modal Logic ---
+        const cartModal = document.getElementById('cartModal');
+        const orderModal = document.getElementById('orderModal');
+
+        function openCart() {
+            updateCartUI();
+            cartModal.style.display = 'flex';
+        }
+
+        function closeCart() {
+            cartModal.style.display = 'none';
+        }
+
+        // Auto-fill Checkout for Logged In Users
+        function openOrderModal() {
+            if (cart.length === 0) {
+                alert("Your cart is empty!");
+                return;
+            }
+            closeCart();
+
+            const modal = document.getElementById('orderModal');
+
+            // Auto-fill user details if logged in
+            if (currentUser) {
+                const nameInput = document.getElementById('customerName');
+                const phoneInput = document.getElementById('customerPhone');
+                // We could also save address in user profile if we wanted
+
+                if (nameInput && !nameInput.value) nameInput.value = currentUser.name;
+                if (phoneInput && !phoneInput.value) phoneInput.value = currentUser.phone;
+            }
+
+            renderCheckoutSummary();
+            modal.style.display = 'flex';
+        }
+
+        function renderCheckoutSummary() {
+            const summaryContainer = document.getElementById('checkoutSummary');
+            let grandTotal = 0;
+            let html = '<div class="checkout-items">';
+
+            cart.forEach(item => {
+                const itemTotal = item.price * item.qty;
+                grandTotal += itemTotal;
+                html += `<div class="checkout-item-row">
+                     <span>${item.name} <small>x${item.qty}</small></span>
+                     <span>₹${itemTotal}</span>
+                 </div>`;
+            });
+
+            html += '</div>';
+            const shipping = 39;
+            const finalTotal = grandTotal + shipping;
+
+            html += `<div class="checkout-divider"></div>`;
+            html += `<div class="checkout-item-row" style="color: #666;">
+                 <span>Subtotal</span>
+                 <span>₹${grandTotal}</span>
+             </div>`;
+            html += `<div class="checkout-item-row" style="color: #666;">
+                 <span>Shipping Charges</span>
+                 <span>₹${shipping}</span>
+             </div>`;
+            html += `<div class="checkout-divider"></div>`;
+            html += `<div class="checkout-total">
+                 <span>Total Amount</span>
+                 <span>₹${finalTotal}</span>
+             </div>`;
+
+            summaryContainer.innerHTML = html;
+        }
+
+        function closeOrderModal() {
+            orderModal.style.display = 'none';
+        }
+
+        // Close modal if clicked outside
+        window.onclick = function (event) {
+            if (event.target == cartModal) closeCart();
+            if (event.target == orderModal) closeOrderModal();
+        }
+
+        function submitOrder(event) {
+            event.preventDefault();
+
+            const name = document.getElementById('customerName').value;
+            const phone = document.getElementById('customerPhone').value;
+            const address = document.getElementById('customerAddress').value;
+            const submitBtn = document.getElementById('submitBtn');
+
+            // Disable button to prevent double submit
+            submitBtn.disabled = true;
+            submitBtn.innerText = "Processing...";
+
+            const name = document.getElementById('customerName').value;
+            const phone = document.getElementById('customerPhone').value;
+            const address = document.getElementById('customerAddress').value;
+            const deliveryDate = document.getElementById('deliveryDate').value;
+
+            // Get Customer ID (or Guest)
+            const custId = currentUser ? currentUser.id : 'GUEST';
+
+            // Save details for next time
+            saveUserDetails(name, phone, address);
+
+            // Re-calculate totals and items
+            let grandTotal = 0;
+            let itemListText = "";
+            let itemCount = 0;
+
+            cart.forEach((item, i) => {
+                const itemTotal = item.price * item.qty;
+                grandTotal += itemTotal;
+                itemCount += item.qty;
+                itemListText += `${i + 1}. ${item.name} (x${item.qty}) - ₹${itemTotal}\n`;
+            });
+
+            const shipping = 39;
+            const finalTotal = grandTotal + shipping;
+
+            // --- 1. Send to Google Sheets (Backend) ---
+            const scriptURL = 'https://script.google.com/macros/s/AKfycbx1ZGfdftOiBg0C3lixdxBtnu89PN6MmB9qjLJde_kSpdeTwu7wEQcagIMHqaeldhXX/exec';
+
+            const orderData = {
+                date: new Date().toLocaleString(),
+                customerId: custId,
+                name: name,
+                phone: phone,
+                address: address,
+                deliveryDate: deliveryDate,
+                items: itemListText,
+                total: finalTotal,
+                itemCount: itemCount
+            };
+
+            fetch(scriptURL, {
+                method: 'POST',
+                mode: 'no-cors', // 'no-cors' prevents reading response, but allows sending
+                headers: {
+                    'Content-Type': 'text/plain' // Avoids CORS preflight options request
+                },
+                body: JSON.stringify(orderData)
+            }).then(response => {
+                console.log('Success!', response);
+                // Since mode is no-cors, we can't read the response, but we assume success if no error.
+            }).catch(error => {
+                console.error('Error!', error.message);
+                alert("Warning: Could not save to Google Sheet. Check internet connection.");
+            });
+
+            // --- 2. Send to WhatsApp (Frontend) ---
+            let message = `*New Order Request*\n`;
+            message += `*Customer ID:* ${custId}\n\n`;
+            message += `*Items:*\n${itemListText}`;
+            message += `\n*Subtotal:* ₹${grandTotal}`;
+            message += `\n*Shipping:* ₹${shipping}`;
+            message += `\n*Grand Total:* ₹${finalTotal}\n\n`;
+            message += `*Customer Details:*\n`;
+            message += `Name: ${name}\n`;
+            message += `Phone: ${phone}\n`;
+            message += `Address: ${address}\n`;
+            message += `Pref. Delivery: ${deliveryDate}`;
+
+            const encodedMessage = encodeURIComponent(message);
+            const whatsappUrl = `https://wa.me/918431329733?text=${encodedMessage}`;
+
+            // Open WhatsApp
+            window.open(whatsappUrl, '_blank');
+
+            // Reset and Close
+            closeOrderModal();
+            cart = []; // Clear cart
+            saveCart(); // Clear storage
+            updateCartUI();
+            alert("Order placed! Redirecting to WhatsApp...");
+        }
+    </script>
+</body>
+
+</html>
