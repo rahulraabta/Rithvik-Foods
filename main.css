@@ -729,6 +729,12 @@ img {
         box-shadow: -5px 0 15px rgba(0, 0, 0, 0.5);
         transition: right 0.3s ease-in-out;
         z-index: 1001;
+        list-style: none;
+        /* Remove bullet points */
+        padding-inline-start: 0;
+        /* Clear default padding */
+        margin: 0;
+        padding-top: 80px;
     }
 
     .nav-links.active {
@@ -739,10 +745,14 @@ img {
         opacity: 1;
         transform: translateX(0);
         transition-delay: 0.2s;
+        width: 100%;
+        /* Ensure li takes full width for centering */
+        text-align: center;
     }
 
     .nav-links li {
         margin: 15px 0;
+        width: 100%;
         /* Default state handles opacity/transform via transition */
     }
 
