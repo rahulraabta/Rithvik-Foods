@@ -600,6 +600,46 @@
             });
         }
 
+        // --- Mobile Menu Enhancements ---
+
+        // 1. Close menu when clicking outside
+        document.addEventListener('click', function (event) {
+            const navLinks = document.querySelector('.nav-links');
+            const menuToggle = document.querySelector('.menu-toggle');
+
+            // Check if menu is open
+            if (navLinks.classList.contains('active')) {
+                // If click is NOT inside menu AND NOT on the toggle button
+                if (!navLinks.contains(event.target) && !menuToggle.contains(event.target)) {
+                    toggleMenu();
+                }
+            }
+        });
+
+        // 2. Swipe to Close Logic (Right to Left)
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        document.addEventListener('touchstart', e => {
+            touchStartX = e.changedTouches[0].screenX;
+        }, { passive: true });
+
+        document.addEventListener('touchend', e => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        }, { passive: true });
+
+        function handleSwipe() {
+            const navLinks = document.querySelector('.nav-links');
+            if (navLinks.classList.contains('active')) {
+                // Swipe Left (Right to Left): Start > End
+                // Threshold of 50px ensures it's a deliberate swipe
+                if (touchStartX - touchEndX > 50) {
+                    toggleMenu();
+                }
+            }
+        }
+
         // Close menu when clicking a link
         document.querySelectorAll('.nav-links a').forEach(link => {
             link.addEventListener('click', () => {
