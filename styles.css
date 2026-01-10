@@ -157,8 +157,9 @@ img {
 }
 
 .nav-logo img {
-    height: 40px;
-    border-radius: 50%;
+    height: 70px;
+    width: auto;
+    border-radius: 0;
 }
 
 .nav-links {
