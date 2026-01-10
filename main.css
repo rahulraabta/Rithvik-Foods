@@ -152,8 +152,11 @@ img {
     align-items: center;
     gap: 15px;
     /* Increased gap slightly */
-    font-family: 'Poppins', sans-serif;
+    font-family: 'Oswald', sans-serif;
+    /* Condensed font for better fit */
     font-size: 2.8rem;
+    white-space: nowrap;
+    /* Prevent line break */
     /* Larger size for cursive font */
     font-weight: 700;
     /* Nunito looks better bold */
@@ -687,6 +690,18 @@ img {
 @media (max-width: 768px) {
     .container {
         padding: 0 15px;
+    }
+
+    /* Fix Logo on Mobile */
+    .nav-logo {
+        font-size: 1.8rem;
+        /* Smaller size for mobile */
+        gap: 8px;
+    }
+
+    .nav-logo img {
+        height: 40px;
+        /* Adjust logo icon size */
     }
 
     .hero-content h1 {
