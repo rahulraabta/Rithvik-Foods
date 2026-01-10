@@ -7,7 +7,15 @@
     <title>Rithvik Foods | Pure, Authentic, Homemade</title>
     <meta name="description"
         content="Authentic homemade Indian masala powders and spices. 100% Pure, No Artificial Colors or Preservatives.">
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles.css?v=2">
+    <style>
+        /* CRITICAL FIX: Ensure content is visible immediately if JS fails */
+        .animate-on-scroll {
+            opacity: 1 !important;
+            transform: none !important;
+            visibility: visible !important;
+        }
+    </style>
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -22,7 +30,7 @@
     <nav class="navbar">
         <div class="container nav-container">
             <a href="#" class="nav-logo">
-                <img src="mandala.png" alt="Rithvik Foods">
+                <img src="mandala.webp" alt="Rithvik Foods">
                 <span>Rithvik Foods</span>
             </a>
             <div class="menu-toggle" onclick="toggleMenu()">☰</div>
@@ -100,19 +108,19 @@
             <!-- Category Navigation Grid -->
             <div class="category-grid">
                 <div class="category-card" onclick="showCategory('health')">
-                    <img src="cat_health.jpg" alt="Health Powder">
+                    <img src="cat_health.webp" alt="Health Powder" loading="lazy">
                     <h3>Health Powder</h3>
                 </div>
                 <div class="category-card" onclick="showCategory('premix')">
-                    <img src="cat_premix.jpg" alt="Premix">
+                    <img src="cat_premix.webp" alt="Premix" loading="lazy">
                     <h3>Premix</h3>
                 </div>
                 <div class="category-card" onclick="showCategory('masala')">
-                    <img src="bisi_bele.png" alt="Masala Powder">
+                    <img src="bisi_bele.webp" alt="Masala Powder" loading="lazy">
                     <h3>Masala Powder</h3>
                 </div>
                 <div class="category-card" onclick="showCategory('chutney')">
-                    <img src="cat_chutney.jpg" alt="Chutney Powder">
+                    <img src="cat_chutney.webp" alt="Chutney Powder" loading="lazy">
                     <h3>Chutney Powder</h3>
                 </div>
             </div>
@@ -125,7 +133,7 @@
 
                     <!-- Amla Powder -->
                     <div class="product-card animate-on-scroll">
-                        <img src="amla_juice.png" alt="Amla Juice Powder" class="product-img">
+                        <img src="amla_juice.webp" alt="Amla Juice Powder" class="product-img" loading="lazy">
                         <div class="product-info">
                             <div>
                                 <span class="badge-natural">Healthy</span>
@@ -149,7 +157,7 @@
 
                     <!-- ABC Malt Powder -->
                     <div class="product-card animate-on-scroll">
-                        <img src="abc_malt.jpg" alt="ABC Malt Powder" class="product-img">
+                        <img src="abc_malt.webp" alt="ABC Malt Powder" class="product-img" loading="lazy">
                         <div class="product-info">
                             <div>
                                 <span class="badge-natural">Nutritious</span>
@@ -168,7 +176,7 @@
 
                     <!-- Ragi Dosa Premix -->
                     <div class="product-card animate-on-scroll">
-                        <img src="ragi_premix.png" alt="Ragi Dosa Premix" class="product-img">
+                        <img src="ragi_premix.webp" alt="Ragi Dosa Premix" class="product-img" loading="lazy">
                         <div class="product-info">
                             <div>
                                 <span class="badge-natural">Instant</span>
@@ -192,7 +200,7 @@
 
                     <!-- Rava Idli Premix -->
                     <div class="product-card animate-on-scroll">
-                        <img src="rava_idli.jpg" alt="Rava Idli Premix" class="product-img">
+                        <img src="rava_idli.webp" alt="Rava Idli Premix" class="product-img" loading="lazy">
                         <div class="product-info">
                             <div>
                                 <span class="badge-natural">Tasty</span>
@@ -222,7 +230,7 @@
 
                     <!-- Vangi Bath Powder -->
                     <div class="product-card animate-on-scroll">
-                        <img src="vangi_bath.png" alt="Vangi Bath Powder" class="product-img">
+                        <img src="vangi_bath.webp" alt="Vangi Bath Powder" class="product-img" loading="lazy">
                         <div class="product-info">
                             <div>
                                 <span class="badge-natural">Best Seller</span>
@@ -246,7 +254,7 @@
 
                     <!-- Bisi Bele Bath Powder -->
                     <div class="product-card animate-on-scroll">
-                        <img src="bisi_bele.png" alt="Bisi Bele Bath Powder" class="product-img">
+                        <img src="bisi_bele.webp" alt="Bisi Bele Bath Powder" class="product-img" loading="lazy">
                         <div class="product-info">
                             <div>
                                 <span class="badge-natural">Premium</span>
@@ -270,7 +278,7 @@
 
                     <!-- Puliyogare Powder -->
                     <div class="product-card animate-on-scroll">
-                        <img src="puliyogare.png" alt="Puliyogare Powder" class="product-img">
+                        <img src="puliyogare.webp" alt="Puliyogare Powder" class="product-img" loading="lazy">
                         <div class="product-info">
                             <div>
                                 <span class="badge-natural">Tangy</span>
@@ -300,7 +308,7 @@
 
                     <!-- Kadlebele Chutney -->
                     <div class="product-card animate-on-scroll">
-                        <img src="kadlebele.jpg" alt="Kadlebele Chutney Powder" class="product-img" loading="lazy">
+                        <img src="kadlebele.webp" alt="Kadlebele Chutney Powder" class="product-img" loading="lazy">
                         <div class="product-info">
                             <div>
                                 <span class="badge-natural">Spicy</span>
@@ -324,7 +332,7 @@
 
                     <!-- Huchellu Chutney -->
                     <div class="product-card animate-on-scroll">
-                        <img src="huchellu.jpg" alt="Huchellu Chutney Powder" class="product-img">
+                        <img src="huchellu.webp" alt="Huchellu Chutney Powder" class="product-img" loading="lazy">
                         <div class="product-info">
                             <div>
                                 <span class="badge-natural">Traditional</span>
@@ -348,7 +356,7 @@
 
                     <!-- Karibevu Chutney -->
                     <div class="product-card animate-on-scroll">
-                        <img src="karibevu.jpg" alt="Karibevu Chutney Powder" class="product-img">
+                        <img src="karibevu.webp" alt="Karibevu Chutney Powder" class="product-img" loading="lazy">
                         <div class="product-info">
                             <div>
                                 <span class="badge-natural">Aromatic</span>
@@ -372,7 +380,7 @@
 
                     <!-- Moringa Chutney -->
                     <div class="product-card animate-on-scroll">
-                        <img src="moringa.jpg" alt="Moringa Chutney Powder" class="product-img">
+                        <img src="moringa.webp" alt="Moringa Chutney Powder" class="product-img" loading="lazy">
                         <div class="product-info">
                             <div>
                                 <span class="badge-natural">Superfood</span>
@@ -565,29 +573,13 @@
     <!-- Simple Scroll Animation Script -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const observerOptions = {
-                threshold: 0.1
-            };
-
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('visible');
-                    }
-                });
-            }, observerOptions);
-
-            // Only animate on larger screens to improve mobile performance
-            if (window.innerWidth > 768) {
-                document.querySelectorAll('.animate-on-scroll').forEach(el => {
-                    observer.observe(el);
-                });
-            } else {
-                // On mobile, just make them visible immediately
-                document.querySelectorAll('.animate-on-scroll').forEach(el => {
-                    el.classList.add('visible');
-                });
-            }
+            // IMMEDIATE VISIBILITY FIX
+            // We are disabling the scroll animation temporarily to ensure the site LOADS.
+            document.querySelectorAll('.animate-on-scroll').forEach(el => {
+                el.classList.add('visible');
+                el.style.opacity = '1';
+                el.style.transform = 'none';
+            });
 
             updateCartUI();
         });
@@ -990,9 +982,6 @@
             submitBtn.disabled = true;
             submitBtn.innerText = "Processing...";
 
-            const name = document.getElementById('customerName').value;
-            const phone = document.getElementById('customerPhone').value;
-            const address = document.getElementById('customerAddress').value;
             const deliveryDate = document.getElementById('deliveryDate').value;
 
             // Get Customer ID (or Guest)
