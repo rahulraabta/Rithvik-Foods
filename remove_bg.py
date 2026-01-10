@@ -45,4 +45,4 @@ def remove_background(input_path, output_path, tolerance=30):
         print(f"Error: {e}")
 
 if __name__ == "__main__":
-    remove_background("mandala.png", "mandala.webp")
+    remove_background("mandala.png", "logo.webp", tolerance=60)
