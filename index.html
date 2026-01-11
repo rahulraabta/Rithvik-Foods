@@ -105,6 +105,11 @@
             <h2 class="section-title text-center animate-on-scroll">Our Collection</h2>
             <p class="text-center animate-on-scroll">Crafted for the perfect meal.</p>
 
+            <!-- Combo Banner -->
+            <div class="combo-banner" onclick="showCategory('combo')">
+                ✨ Festive Combos & Offers ✨
+            </div>
+
             <!-- Category Navigation Grid -->
             <div class="category-grid">
                 <div class="category-card" onclick="showCategory('health')">
@@ -126,6 +131,39 @@
             </div>
 
             <div class="product-grid">
+
+                <!-- 0. Combo Section -->
+                <div id="cat-combo" class="product-section">
+                    <h3 class="product-category-title">Combo Packs</h3>
+
+                    <!-- Example Combo Product -->
+                    <div class="product-card animate-on-scroll">
+                        <div
+                            style="height: 200px; background: #eee; display: flex; align-items: center; justify-content: center; color: #aaa;">
+                            Product Image
+                        </div>
+                        <!-- Replace above div with <img src="combo_image.webp" ...> when available -->
+                        <div class="product-info">
+                            <div>
+                                <span class="badge-natural">Value Pack</span>
+                                <h3 class="product-title">Breakfast Combo</h3>
+                                <p>Ragi Dosa Premix + Rava Idli Premix + Chutney Powder</p>
+                            </div>
+                            <div style="margin-bottom: 10px;">
+                                <span style="font-size: 1.1rem; font-weight: 700; color: #2E7D32;">₹199</span> <span
+                                    style="font-size: 0.9rem; color: #757575; text-decoration: line-through;">₹213</span>
+                                <br><span class="shipping-text">+ shipping charges</span>
+                            </div>
+                            <div class="quantity-wrapper">
+                                <button class="qty-btn" onclick="adjustQty('combo1', -1)">-</button>
+                                <span id="qty-combo1" class="qty-display">1</span>
+                                <button class="qty-btn" onclick="adjustQty('combo1', 1)">+</button>
+                            </div>
+                            <button onclick="addToCart('Breakfast Combo', 199, 'qty-combo1')" class="btn btn-whatsapp"
+                                style="width: 100%; border: none;">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
 
                 <!-- 1. Health Powder Section -->
                 <div id="cat-health" class="product-section">
