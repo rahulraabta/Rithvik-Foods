@@ -647,6 +647,10 @@ img {
     font-size: 1.2rem;
 }
 
+.footer-about {
+    flex: 2;
+}
+
 .footer-links li {
     list-style: none;
     margin-bottom: 10px;
@@ -794,8 +798,23 @@ img {
         transition-delay: 0.4s;
     }
 
-    .nav-links.active li:nth-child(5) {
-        transition-delay: 0.5s;
+    .footer-content {
+        flex-direction: column;
+        gap: 30px;
+    }
+
+    .footer-about {
+        flex: auto;
+    }
+
+    .footer-column {
+        width: 100%;
+        text-align: center;
+    }
+
+    .footer-links li {
+        justify-content: center;
+        display: flex;
     }
 
     .nav-link {
