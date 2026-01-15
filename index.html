@@ -568,11 +568,49 @@
                     <input type="date" id="deliveryDate" required>
                 </div>
 
+                <!-- Payment Method Selection -->
+                <div class="form-group">
+                    <label>Payment Method</label>
+                    <div class="payment-options">
+                        <label class="payment-option selected">
+                            <input type="radio" name="paymentMethod" value="cod" checked onclick="togglePayment(this)">
+                            <span class="pay-icon">💵</span>
+                            <span>Pay on Delivery</span>
+                        </label>
+                        <label class="payment-option">
+                            <input type="radio" name="paymentMethod" value="online" onclick="togglePayment(this)">
+                            <span class="pay-icon">📱</span>
+                            <span>Online Payment (UPI)</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- NEW: Inline Online Payment Section -->
+                <div id="onlinePaymentSection"
+                    style="display: none; margin-bottom: 20px; text-align: center; border: 1px solid #ddd; padding: 15px; border-radius: 10px; background-color: #f9f9f9;">
+                    <p style="font-weight: bold; color: var(--primary-color); margin-bottom: 10px;">Scan to Pay</p>
+
+                    <div id="inlineQrContainer"
+                        style="background: white; padding: 10px; display: inline-block; border-radius: 8px; margin-bottom: 10px;">
+                        <!-- QR Code will be inserted here -->
+                    </div>
+
+                    <p id="inlinePayAmount" style="margin-bottom: 10px; font-weight: bold;">Total: ₹0</p>
+
+                    <div class="form-group" style="text-align: left;">
+                        <label for="upiRefId" style="font-size: 0.9rem;">UPI Reference ID (Optional)</label>
+                        <input type="text" id="upiRefId" placeholder="Enter Reference ID / UTR" style="padding: 8px;">
+                        <small style="color: #666; font-size: 0.8rem;">Helps us confirm your payment faster.</small>
+                    </div>
+                </div>
+
                 <button type="submit" id="submitBtn" class="btn btn-primary" style="width: 100%;">Confirm &
                     Order</button>
             </form>
         </div>
     </div>
+
+
 
     <!-- Login/Signup Modal -->
     <div id="authModal" class="modal">
@@ -1073,19 +1111,105 @@
             if (event.target == orderModal) closeOrderModal();
         }
 
+        // --- Payment & Order Logic ---
+        let tempOrderDetails = null;
+
+        function togglePayment(radio) {
+            try {
+                // Update UI
+                const options = document.querySelectorAll('.payment-option');
+                if (options) {
+                    options.forEach(el => el.classList.remove('selected'));
+                    const parent = radio.closest('.payment-option');
+                    if (parent) parent.classList.add('selected');
+                }
+
+                const onlineSection = document.getElementById('onlinePaymentSection');
+                if (!onlineSection) {
+                    alert("Error: Payment section not found. Please refresh.");
+                    return;
+                }
+
+                if (radio.value === 'online') {
+                    onlineSection.style.display = 'block';
+
+                    // Calculate total
+                    let grandTotal = 0;
+                    if (cart && cart.length > 0) {
+                        cart.forEach(item => {
+                            grandTotal += item.price * item.qty;
+                        });
+                    }
+                    const finalTotal = grandTotal + 39; // Shipping
+
+                    generateInlineQR(finalTotal);
+                } else {
+                    onlineSection.style.display = 'none';
+                }
+            } catch (e) {
+                console.error("Payment Toggle Error:", e);
+                alert("Something went wrong with payment selection. Please try again.");
+            }
+        }
+
+        function generateInlineQR(amount) {
+            document.getElementById('inlinePayAmount').innerText = `Total: ₹${amount}`;
+
+            const upiId = 'ashusanthu1905@oksbi';
+            const upiName = 'Rithvik Foods';
+            const upiLink = `upi://pay?pa=${upiId}&pn=${encodeURIComponent(upiName)}&am=${amount}&cu=INR`;
+            const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(upiLink)}`;
+
+            document.getElementById('inlineQrContainer').innerHTML = `<img src="${qrUrl}" alt="Scan to Pay" style="width: 150px; height: 150px;">`;
+        }
+
         function submitOrder(event) {
             event.preventDefault();
 
             const name = document.getElementById('customerName').value;
             const phone = document.getElementById('customerPhone').value;
             const address = document.getElementById('customerAddress').value;
+            const deliveryDate = document.getElementById('deliveryDate').value;
+
+            // Get selected payment method
+            const paymentMethodInput = document.querySelector('input[name="paymentMethod"]:checked');
+            const paymentMethod = paymentMethodInput ? paymentMethodInput.value : 'cod';
+
+            let paymentModeStr = 'Cash on Delivery';
+            let refId = '';
+
+            if (paymentMethod === 'online') {
+                paymentModeStr = 'Online Payment (UPI)';
+                const refInput = document.getElementById('upiRefId');
+                refId = refInput ? refInput.value.trim() : '';
+                if (refId) {
+                    paymentModeStr += ` (Ref: ${refId})`;
+                }
+            }
+
+            // Calculate Total (Re-calculation for verification)
+            let grandTotal = 0;
+            cart.forEach(item => {
+                grandTotal += item.price * item.qty;
+            });
+            const finalTotal = grandTotal + 39; // Shipping
+
+            // Save details temporarily (not strictly needed now but keeping structure)
+            tempOrderDetails = {
+                name, phone, address, deliveryDate,
+                total: finalTotal
+            };
+
+            processOrder(paymentModeStr);
+        }
+
+        function processOrder(paymentMode) {
+            const { name, phone, address, deliveryDate } = tempOrderDetails;
             const submitBtn = document.getElementById('submitBtn');
 
             // Disable button to prevent double submit
             submitBtn.disabled = true;
             submitBtn.innerText = "Processing...";
-
-            const deliveryDate = document.getElementById('deliveryDate').value;
 
             // Get Customer ID (or Guest)
             const custId = currentUser ? currentUser.id : 'GUEST';
@@ -1120,19 +1244,23 @@
                 deliveryDate: deliveryDate,
                 items: itemListText,
                 total: finalTotal,
-                itemCount: itemCount
+                itemCount: itemCount,
+                paymentMode: paymentMode
             };
+            // Note: Google Sheet script might need update to accept paymentMode, but usually it just logs extra columns if they exist or ignores them. 
+            // We'll append it to address or items if we want to be safe without changing backend, 
+            // BUT for now let's just send it. If the sheet doesn't have the column it might be dropped, which is fine, 
+            // the critical part is the WhatsApp message.
 
             fetch(scriptURL, {
                 method: 'POST',
-                mode: 'no-cors', // 'no-cors' prevents reading response, but allows sending
+                mode: 'no-cors',
                 headers: {
-                    'Content-Type': 'text/plain' // Avoids CORS preflight options request
+                    'Content-Type': 'text/plain'
                 },
                 body: JSON.stringify(orderData)
             }).then(response => {
                 console.log('Success!', response);
-                // Since mode is no-cors, we can't read the response, but we assume success if no error.
             }).catch(error => {
                 console.error('Error!', error.message);
                 alert("Warning: Could not save to Google Sheet. Check internet connection.");
@@ -1140,7 +1268,8 @@
 
             // --- 2. Send to WhatsApp (Frontend) ---
             let message = `*New Order Request*\n`;
-            message += `*Customer ID:* ${custId}\n\n`;
+            message += `*Customer ID:* ${custId}\n`;
+            message += `*Payment:* ${paymentMode}\n\n`; // Add Payment Mode
             message += `*Items:*\n${itemListText}`;
             message += `\n*Subtotal:* ₹${grandTotal}`;
             message += `\n*Shipping:* ₹${shipping}`;
@@ -1162,7 +1291,11 @@
             cart = []; // Clear cart
             saveCart(); // Clear storage
             updateCartUI();
-            alert("Order placed! Redirecting to WhatsApp...");
+
+            submitBtn.disabled = false;
+            submitBtn.innerText = "Confirm & Order";
+
+            alert(`Order placed (${paymentMode})! Redirecting to WhatsApp...`);
         }
     </script>
 </body>

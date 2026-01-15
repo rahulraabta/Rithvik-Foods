@@ -624,6 +624,46 @@ img {
     height: 80px;
 }
 
+/* Payment Options */
+.payment-options {
+    display: flex;
+    gap: 15px;
+    margin-top: 10px;
+}
+
+.payment-option {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.payment-option:hover {
+    border-color: var(--primary-color);
+    background-color: rgba(46, 125, 50, 0.05);
+}
+
+.payment-option.selected {
+    border-color: var(--primary-color);
+    background-color: rgba(46, 125, 50, 0.1);
+    color: var(--primary-color);
+    font-weight: 700;
+}
+
+.payment-option input {
+    margin: 0;
+    cursor: pointer;
+}
+
+.pay-icon {
+    font-size: 1.2rem;
+}
+
 @keyframes fadeIn {
     from {
         opacity: 0;
