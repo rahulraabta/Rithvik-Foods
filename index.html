@@ -876,8 +876,30 @@
                 localStorage.setItem('rithvik_current_user', JSON.stringify(user)); // Start Session
                 closeAuthModal();
                 updateAuthUI();
-                loadUserCart(); // Load their data
-                alert(`Welcome back, ${user.name}!\nYour ID: ${user.id}`);
+
+                // CRITICAL: Merge Guest Cart with User Cart
+                const guestCart = [...cart]; // Copy current guest items
+                loadUserCart(); // Load saved user items (overwrites 'cart')
+
+                // Merge
+                let mergedCount = 0;
+                guestCart.forEach(guestItem => {
+                    const existingItem = cart.find(uItem => uItem.name === guestItem.name);
+                    if (existingItem) {
+                        existingItem.qty += guestItem.qty;
+                    } else {
+                        cart.push(guestItem);
+                    }
+                    mergedCount++;
+                });
+
+                if (mergedCount > 0) {
+                    saveCart(); // Save merged state to user storage
+                    alert(`Welcome back, ${user.name}!\nWe added ${mergedCount} items from your guest cart to your account.`);
+                } else {
+                    alert(`Welcome back, ${user.name}!`);
+                }
+
             } else {
                 alert("Invalid Email/Phone or Password.");
             }
@@ -1051,14 +1073,22 @@
 
             const modal = document.getElementById('orderModal');
 
+            // NEW: Enforce Login before Checkout
+            if (!currentUser) {
+                alert("Please Login to help us track your order and save your details!");
+                openAuthModal();
+                return;
+            }
+
             // Auto-fill user details if logged in
             if (currentUser) {
                 const nameInput = document.getElementById('customerName');
                 const phoneInput = document.getElementById('customerPhone');
-                // We could also save address in user profile if we wanted
+                const addrInput = document.getElementById('customerAddress');
 
-                if (nameInput && !nameInput.value) nameInput.value = currentUser.name;
-                if (phoneInput && !phoneInput.value) phoneInput.value = currentUser.phone;
+                if (nameInput && !nameInput.value && currentUser.name) nameInput.value = currentUser.name;
+                if (phoneInput && !phoneInput.value && currentUser.phone) phoneInput.value = currentUser.phone;
+                if (addrInput && !addrInput.value && currentUser.address) addrInput.value = currentUser.address;
             }
 
             renderCheckoutSummary();
@@ -1214,8 +1244,24 @@
             // Get Customer ID (or Guest)
             const custId = currentUser ? currentUser.id : 'GUEST';
 
-            // Save details for next time
-            saveUserDetails(name, phone, address);
+            // SAVE USER DETAILS (Update DB)
+            if (currentUser) {
+                // Update local object
+                currentUser.phone = phone;
+                currentUser.address = address; // Save for next time
+
+                // Update in "Database"
+                const usersDB = JSON.parse(localStorage.getItem('rithvik_users_db') || '[]');
+                const userIndex = usersDB.findIndex(u => u.id === currentUser.id);
+                if (userIndex !== -1) {
+                    usersDB[userIndex] = currentUser;
+                    localStorage.setItem('rithvik_users_db', JSON.stringify(usersDB));
+                    localStorage.setItem('rithvik_current_user', JSON.stringify(currentUser)); // Update session
+                }
+            } else {
+                // Fallback for guest (though login is now enforced)
+                saveUserDetails(name, phone, address);
+            }
 
             // Re-calculate totals and items
             let grandTotal = 0;
