@@ -586,6 +586,9 @@ img {
     position: relative;
     box-shadow: 0 5px 30px rgba(0, 0, 0, 0.3);
     animation: fadeIn 0.3s ease;
+    /* FIX: Mobile Scroll */
+    max-height: 90vh;
+    overflow-y: auto;
 }
 
 .close-btn {
