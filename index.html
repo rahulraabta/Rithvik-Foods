@@ -1295,11 +1295,28 @@
             const shipping = 39;
             const finalTotal = grandTotal + shipping;
 
+            // --- 3. Save to Local History (NEW) ---
+            // Generate a unique Order ID based on timestamp
+            const orderId = 'ORD-' + Date.now().toString().slice(-6);
+
+            const newOrder = {
+                id: orderId,
+                date: new Date().toISOString(),
+                items: cart.map(i => ({ ...i })), // Deep copy items
+                total: finalTotal,
+                status: 'Placed',
+                paymentMode: paymentMode,
+                deliveryDate: deliveryDate
+            };
+
+            saveOrderToHistory(newOrder);
+
             // --- 1. Send to Google Sheets (Backend) ---
-            const scriptURL =
-                'https://script.google.com/macros/s/AKfycbyFL500GeWWWUxCNYPyu6lbOPZdnA8XOKQ10tRhfasEaY8mmxrgpqPmduogvdwNkmjw/exec';
+            const scriptURL = 'https://script.google.com/macros/s/AKfycbwbAydCjIAHyEYQ8tbHZ48Qr9f6i3yATirFTwINcDry8RBmxpVXeG74Xamu0LOL0GfA/exec';
 
             const orderData = {
+                action: 'create', // Start Action
+                orderId: orderId, // Include ID
                 date: new Date().toLocaleString(),
                 customerId: custId,
                 name: name,
@@ -1309,12 +1326,9 @@
                 items: itemListText,
                 total: finalTotal,
                 itemCount: itemCount,
-                paymentMode: paymentMode
+                paymentMode: paymentMode,
+                orderStatus: 'Placed'
             };
-            // Note: Google Sheet script might need update to accept paymentMode, but usually it just logs extra columns if they exist or ignores them.
-            // We'll append it to address or items if we want to be safe without changing backend,
-            // BUT for now let's just send it. If the sheet doesn't have the column it might be dropped, which is fine,
-            // the critical part is the WhatsApp message.
 
             fetch(scriptURL, {
                 method: 'POST',
@@ -1343,22 +1357,6 @@
             message += `Phone: ${phone}\n`;
             message += `Address: ${address}\n`;
             message += `Pref. Delivery: ${deliveryDate}`;
-
-            // --- 3. Save to Local History (NEW) ---
-            // Generate a unique Order ID based on timestamp
-            const orderId = 'ORD-' + Date.now().toString().slice(-6);
-
-            const newOrder = {
-                id: orderId,
-                date: new Date().toISOString(),
-                items: cart.map(i => ({ ...i })), // Deep copy items
-                total: finalTotal,
-                status: 'Placed',
-                paymentMode: paymentMode,
-                deliveryDate: deliveryDate
-            };
-
-            saveOrderToHistory(newOrder);
 
             // Append Order ID to WhatsApp message
             message = `*New Order Request* (ID: ${orderId})\n` + message.substring(message.indexOf('\n') + 1); // Replace first line or append ID
@@ -1484,6 +1482,20 @@
 
                 // Notify via WhatsApp
                 const order = orders[orderIndex];
+
+                // --- Sync Cancellation with Google Sheet ---
+                const scriptURL = 'https://script.google.com/macros/s/AKfycbwbAydCjIAHyEYQ8tbHZ48Qr9f6i3yATirFTwINcDry8RBmxpVXeG74Xamu0LOL0GfA/exec';
+
+                fetch(scriptURL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'text/plain' },
+                    body: JSON.stringify({
+                        action: 'cancel',
+                        orderId: order.id
+                    })
+                }).catch(e => console.error("Cancellation Sync Error:", e));
+
                 const msg = `Hello, I would like to CANCEL my order.\n\nOrder ID: ${order.id}\nDate: ${new Date(order.date).toLocaleDateString()}\nTotal: ₹${order.total}\n\nPlease confirm cancellation.`;
 
                 window.open(`https://wa.me/918431329733?text=${encodeURIComponent(msg)}`, '_blank');
