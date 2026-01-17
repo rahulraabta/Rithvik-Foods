@@ -869,8 +869,7 @@
             // Generate Customer ID (e.g., RF-4821)
             const customerId = 'RF-' + Math.floor(1000 + Math.random() * 9000);
 
-            const newUser = { id: customerId, name, email, phone, password }; // Note: In real app, never save plain
-            password!
+            const newUser = { id: customerId, name, email, phone, password }; // Note: In real app, never save plain password!
             usersDB.push(newUser);
             localStorage.setItem('rithvik_users_db', JSON.stringify(usersDB));
 
@@ -1001,9 +1000,13 @@
             let currentQty = parseInt(qtyEl.innerText);
             currentQty += delta;
             if (currentQty < 1) currentQty = 1; qtyEl.innerText = currentQty;
-        } function addToCart(productName, price, qtyId) {
-            const qty = parseInt(document.getElementById(qtyId).innerText); // Check if item already exists const
-            existingItem = cart.find(item => item.name === productName);
+        }
+
+        function addToCart(productName, price, qtyId) {
+            const qty = parseInt(document.getElementById(qtyId).innerText);
+            // Check if item already exists
+            const existingItem = cart.find(item => item.name === productName);
+
             if (existingItem) {
                 existingItem.qty += qty;
             } else {
@@ -1115,30 +1118,30 @@
             cart.forEach(item => {
                 const itemTotal = item.price * item.qty;
                 grandTotal += itemTotal;
-                html += `< div class="checkout-item-row" >
+                html += `<div class="checkout-item-row">
                     <span>${item.name} <small>x${item.qty}</small></span>
                     <span>₹${itemTotal}</span>
-                </div > `;
+                </div>`;
             });
 
             html += '</div>';
             const shipping = 39;
             const finalTotal = grandTotal + shipping;
 
-            html += `< div class="checkout-divider" ></div > `;
-            html += `< div class="checkout-item-row" style = "color: #666;" >
+            html += `<div class="checkout-divider"></div>`;
+            html += `<div class="checkout-item-row" style="color: #666;">
                 <span>Subtotal</span>
                 <span>₹${grandTotal}</span>
-            </div > `;
-            html += `< div class="checkout-item-row" style = "color: #666;" >
+            </div>`;
+            html += `<div class="checkout-item-row" style="color: #666;">
                 <span>Shipping Charges</span>
                 <span>₹${shipping}</span>
-            </div > `;
-            html += `< div class="checkout-divider" ></div > `;
-            html += `< div class="checkout-total" >
+            </div>`;
+            html += `<div class="checkout-divider"></div>`;
+            html += `<div class="checkout-total">
                 <span>Total Amount</span>
                 <span>₹${finalTotal}</span>
-            </div > `;
+            </div>`;
 
             summaryContainer.innerHTML = html;
         }
