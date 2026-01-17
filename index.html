@@ -853,9 +853,8 @@
             // Strong Password Validation
             const strongPasswordRegex = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,}$/;
             if (!strongPasswordRegex.test(password)) {
-                alert("Password is too weak!\n- At least 8 characters\n- Include a number\n- Include a special character
-                    (!@#$ %)");
-        return;
+                alert("Password is too weak!\n- At least 8 characters\n- Include a number\n- Include a special character (!@#$%)");
+                return;
             }
 
             // Save User (Simulated DB in LocalStorage)
@@ -1038,60 +1037,49 @@
                 return;
             }
 
-            let html = '<table class="cart-table">
-                < thead >
-                <tr>
-                    <th>Item</th>
-                    <th>Qty</th>
-                    <th>Price</th>
-                    <th>Action</th>
-                </tr>
-                </thead >
-                <tbody>';
-                    let grandTotal = 0;
+            let html = '<table class="cart-table"><thead><tr><th>Item</th><th>Qty</th><th>Price</th><th>Action</th></tr></thead><tbody>';
+            let grandTotal = 0;
 
-                    cart.forEach((item, index) => {
-                    const itemTotal = item.price * item.qty;
-                    grandTotal += itemTotal;
-                    html += `<tr>
-                        <td>${item.name}</td>
-                        <td>${item.qty}</td>
-                        <td>₹${itemTotal}</td>
-                        <td><button class="btn-remove" onclick="removeFromCart(${index})">Remove</button></td>
-                    </tr>`;
-                    });
+            cart.forEach((item, index) => {
+                const itemTotal = item.price * item.qty;
+                grandTotal += itemTotal;
+                html += `<tr>
+                    <td>${item.name}</td>
+                    <td>${item.qty}</td>
+                    <td>₹${itemTotal}</td>
+                    <td><button class="btn-remove" onclick="removeFromCart(${index})">Remove</button></td>
+                </tr>`;
+            });
 
-                    const shipping = 39;
-                    const finalTotal = grandTotal + shipping;
+            const shipping = 39;
+            const finalTotal = grandTotal + shipping;
 
-                    html += `</tbody>
-            </table > `;
-            html += `< div class="cart-total-row" > Subtotal: ₹${ grandTotal }</div > `;
-            html += `< div class="cart-total-row" style = "font-size: 0.9rem; color: #666;" > Shipping: ₹${ shipping }</div > `;
-            html += `< div class="cart-total-row" style = "color: var(--primary-color); font-size: 1.3rem;" > Total:
-                ₹${ finalTotal }</div > `;
+            html += `</tbody></table>`;
+            html += `<div class="cart-total-row">Subtotal: ₹${grandTotal}</div>`;
+            html += `<div class="cart-total-row" style="font-size: 0.9rem; color: #666;">Shipping: ₹${shipping}</div>`;
+            html += `<div class="cart-total-row" style="color: var(--primary-color); font-size: 1.3rem;">Total: ₹${finalTotal}</div>`;
 
             container.innerHTML = html;
-            }
+        }
 
-            // --- Modal Logic ---
-            const cartModal = document.getElementById('cartModal');
-            const orderModal = document.getElementById('orderModal');
+        // --- Modal Logic ---
+        const cartModal = document.getElementById('cartModal');
+        const orderModal = document.getElementById('orderModal');
 
-            function openCart() {
+        function openCart() {
             updateCartUI();
             cartModal.style.display = 'flex';
-            }
+        }
 
-            function closeCart() {
+        function closeCart() {
             cartModal.style.display = 'none';
-            }
+        }
 
-            // Auto-fill Checkout for Logged In Users
-            function openOrderModal() {
+        // Auto-fill Checkout for Logged In Users
+        function openOrderModal() {
             if (cart.length === 0) {
-            alert("Your cart is empty!");
-            return;
+                alert("Your cart is empty!");
+                return;
             }
             closeCart();
 
@@ -1099,41 +1087,41 @@
 
             // NEW: Enforce Login before Checkout
             if (!currentUser) {
-            alert("Please Login to help us track your order and save your details!");
-            openAuthModal();
-            return;
+                alert("Please Login to help us track your order and save your details!");
+                openAuthModal();
+                return;
             }
 
             // Auto-fill user details if logged in
             if (currentUser) {
-            const nameInput = document.getElementById('customerName');
-            const phoneInput = document.getElementById('customerPhone');
-            const addrInput = document.getElementById('customerAddress');
+                const nameInput = document.getElementById('customerName');
+                const phoneInput = document.getElementById('customerPhone');
+                const addrInput = document.getElementById('customerAddress');
 
-            if (nameInput && !nameInput.value && currentUser.name) nameInput.value = currentUser.name;
-            if (phoneInput && !phoneInput.value && currentUser.phone) phoneInput.value = currentUser.phone;
-            if (addrInput && !addrInput.value && currentUser.address) addrInput.value = currentUser.address;
+                if (nameInput && !nameInput.value && currentUser.name) nameInput.value = currentUser.name;
+                if (phoneInput && !phoneInput.value && currentUser.phone) phoneInput.value = currentUser.phone;
+                if (addrInput && !addrInput.value && currentUser.address) addrInput.value = currentUser.address;
             }
 
             renderCheckoutSummary();
             modal.style.display = 'flex';
-            }
+        }
 
-            function renderCheckoutSummary() {
+        function renderCheckoutSummary() {
             const summaryContainer = document.getElementById('checkoutSummary');
             let grandTotal = 0;
             let html = '<div class="checkout-items">';
 
-                cart.forEach(item => {
+            cart.forEach(item => {
                 const itemTotal = item.price * item.qty;
                 grandTotal += itemTotal;
                 html += `< div class="checkout-item-row" >
                     <span>${item.name} <small>x${item.qty}</small></span>
                     <span>₹${itemTotal}</span>
                 </div > `;
-                });
+            });
 
-                html += '</div>';
+            html += '</div>';
             const shipping = 39;
             const finalTotal = grandTotal + shipping;
 
@@ -1153,61 +1141,61 @@
             </div > `;
 
             summaryContainer.innerHTML = html;
-            }
+        }
 
-            function closeOrderModal() {
+        function closeOrderModal() {
             orderModal.style.display = 'none';
-            }
+        }
 
-            // Close modal if clicked outside
-            window.onclick = function (event) {
+        // Close modal if clicked outside
+        window.onclick = function (event) {
             if (event.target == cartModal) closeCart();
             if (event.target == orderModal) closeOrderModal();
-            }
+        }
 
-            // --- Payment & Order Logic ---
-            let tempOrderDetails = null;
+        // --- Payment & Order Logic ---
+        let tempOrderDetails = null;
 
-            function togglePayment(radio) {
+        function togglePayment(radio) {
             try {
-            // Update UI
-            const options = document.querySelectorAll('.payment-option');
-            if (options) {
-            options.forEach(el => el.classList.remove('selected'));
-            const parent = radio.closest('.payment-option');
-            if (parent) parent.classList.add('selected');
-            }
+                // Update UI
+                const options = document.querySelectorAll('.payment-option');
+                if (options) {
+                    options.forEach(el => el.classList.remove('selected'));
+                    const parent = radio.closest('.payment-option');
+                    if (parent) parent.classList.add('selected');
+                }
 
-            const onlineSection = document.getElementById('onlinePaymentSection');
-            if (!onlineSection) {
-            alert("Error: Payment section not found. Please refresh.");
-            return;
-            }
+                const onlineSection = document.getElementById('onlinePaymentSection');
+                if (!onlineSection) {
+                    alert("Error: Payment section not found. Please refresh.");
+                    return;
+                }
 
-            if (radio.value === 'online') {
-            onlineSection.style.display = 'block';
+                if (radio.value === 'online') {
+                    onlineSection.style.display = 'block';
 
-            // Calculate total
-            let grandTotal = 0;
-            if (cart && cart.length > 0) {
-            cart.forEach(item => {
-            grandTotal += item.price * item.qty;
-            });
-            }
-            const finalTotal = grandTotal + 39; // Shipping
+                    // Calculate total
+                    let grandTotal = 0;
+                    if (cart && cart.length > 0) {
+                        cart.forEach(item => {
+                            grandTotal += item.price * item.qty;
+                        });
+                    }
+                    const finalTotal = grandTotal + 39; // Shipping
 
-            generateInlineQR(finalTotal);
-            } else {
-            onlineSection.style.display = 'none';
-            }
+                    generateInlineQR(finalTotal);
+                } else {
+                    onlineSection.style.display = 'none';
+                }
             } catch (e) {
-            console.error("Payment Toggle Error:", e);
-            alert("Something went wrong with payment selection. Please try again.");
+                console.error("Payment Toggle Error:", e);
+                alert("Something went wrong with payment selection. Please try again.");
             }
-            }
+        }
 
-            function generateInlineQR(amount) {
-            document.getElementById('inlinePayAmount').innerText = `Total: ₹${ amount } `;
+        function generateInlineQR(amount) {
+            document.getElementById('inlinePayAmount').innerText = `Total: ₹${amount} `;
 
             const upiId = 'ashusanthu1905@oksbi';
             const upiName = 'Rithvik Foods';
@@ -1320,25 +1308,24 @@
                 itemCount: itemCount,
                 paymentMode: paymentMode
             };
-            // Note: Google Sheet script might need update to accept paymentMode, but usually it just logs extra columns
-            if they exist or ignores them.
-                // We'll append it to address or items if we want to be safe without changing backend,
-                // BUT for now let's just send it. If the sheet doesn't have the column it might be dropped, which is fine,
-                // the critical part is the WhatsApp message.
+            // Note: Google Sheet script might need update to accept paymentMode, but usually it just logs extra columns if they exist or ignores them.
+            // We'll append it to address or items if we want to be safe without changing backend,
+            // BUT for now let's just send it. If the sheet doesn't have the column it might be dropped, which is fine,
+            // the critical part is the WhatsApp message.
 
-                fetch(scriptURL, {
-                    method: 'POST',
-                    mode: 'no-cors',
-                    headers: {
-                        'Content-Type': 'text/plain'
-                    },
-                    body: JSON.stringify(orderData)
-                }).then(response => {
-                    console.log('Success!', response);
-                }).catch(error => {
-                    console.error('Error!', error.message);
-                    alert("Warning: Could not save to Google Sheet. Check internet connection.");
-                });
+            fetch(scriptURL, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: {
+                    'Content-Type': 'text/plain'
+                },
+                body: JSON.stringify(orderData)
+            }).then(response => {
+                console.log('Success!', response);
+            }).catch(error => {
+                console.error('Error!', error.message);
+                alert("Warning: Could not save to Google Sheet. Check internet connection.");
+            });
 
             // --- 2. Send to WhatsApp (Frontend) ---
             let message = `*New Order Request*\n`;
@@ -1371,8 +1358,7 @@
             saveOrderToHistory(newOrder);
 
             // Append Order ID to WhatsApp message
-            message = `*New Order Request* (ID: ${orderId})\n` + message.substring(message.indexOf('\n') + 1); //
-            Replace first line or append ID
+            message = `*New Order Request* (ID: ${orderId})\n` + message.substring(message.indexOf('\n') + 1); // Replace first line or append ID
 
             const encodedMessage = encodeURIComponent(message);
             const whatsappUrl = `https://wa.me/918431329733?text=${encodedMessage}`;
