@@ -1506,8 +1506,8 @@ img {
     }
 
     /* =====================================================
-       CLEAN MOBILE PRODUCT CARDS
-       Simple, functional design without complex effects
+       MOBILE PRODUCT CARDS WITH ANIMATION
+       Ken Burns effect enabled for mobile
        ===================================================== */
 
     /* Product info - clean styling */
@@ -1523,16 +1523,24 @@ img {
     /* Simple card styling */
     .product-card {
         transition: box-shadow 0.3s ease;
+        overflow: hidden;
     }
 
     .product-card:active {
         box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
     }
 
-    /* Remove any pseudo-elements that may cause overflow */
-    .product-card::before,
-    .product-card::after {
-        display: none !important;
+    /* Enable Ken Burns animation on mobile */
+    .product-img {
+        animation: kenBurnsZoom 6s ease-in-out infinite alternate !important;
+    }
+
+    .product-card:nth-child(2n) .product-img {
+        animation: kenBurnsPanLeft 7s ease-in-out infinite alternate !important;
+    }
+
+    .product-card:nth-child(3n) .product-img {
+        animation: kenBurnsPanUp 6.5s ease-in-out infinite alternate !important;
     }
 
     .product-title {
