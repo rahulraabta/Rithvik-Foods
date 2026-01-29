@@ -398,61 +398,61 @@ img {
     object-fit: cover;
     display: block;
     transition: transform 0.6s ease, filter 0.4s ease;
-    animation: kenBurnsZoom 8s ease-in-out infinite alternate;
+    animation: kenBurnsZoom 4s ease-in-out infinite alternate;
     transform-origin: center center;
 }
 
-/* Ken Burns Zoom Animation - Cinematic Effect */
+/* Ken Burns Zoom Animation - More Visible */
 @keyframes kenBurnsZoom {
     0% {
-        transform: scale(1) translateX(0) translateY(0);
+        transform: scale(1);
     }
 
     100% {
-        transform: scale(1.15) translateX(2%) translateY(-2%);
+        transform: scale(1.25) translateX(3%) translateY(-3%);
     }
 }
 
 /* Different animations for variety */
 .product-card:nth-child(2n) .product-img {
-    animation: kenBurnsPanLeft 10s ease-in-out infinite alternate;
+    animation: kenBurnsPanLeft 5s ease-in-out infinite alternate;
 }
 
 @keyframes kenBurnsPanLeft {
     0% {
-        transform: scale(1.1) translateX(3%);
+        transform: scale(1.2) translateX(5%);
     }
 
     100% {
-        transform: scale(1.05) translateX(-3%);
+        transform: scale(1.1) translateX(-5%);
     }
 }
 
 .product-card:nth-child(3n) .product-img {
-    animation: kenBurnsPanUp 9s ease-in-out infinite alternate;
+    animation: kenBurnsPanUp 4.5s ease-in-out infinite alternate;
 }
 
 @keyframes kenBurnsPanUp {
     0% {
-        transform: scale(1.08) translateY(3%);
+        transform: scale(1.15) translateY(5%);
     }
 
     100% {
-        transform: scale(1.12) translateY(-3%);
+        transform: scale(1.2) translateY(-5%);
     }
 }
 
 .product-card:nth-child(5n) .product-img {
-    animation: kenBurnsDiagonal 11s ease-in-out infinite alternate;
+    animation: kenBurnsDiagonal 5s ease-in-out infinite alternate;
 }
 
 @keyframes kenBurnsDiagonal {
     0% {
-        transform: scale(1) translate(-2%, 2%);
+        transform: scale(1.05) translate(-4%, 4%);
     }
 
     100% {
-        transform: scale(1.18) translate(2%, -2%);
+        transform: scale(1.25) translate(4%, -4%);
     }
 }
 
