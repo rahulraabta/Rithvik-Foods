@@ -1487,69 +1487,49 @@ img {
     }
 
     /* =====================================================
-       ELITE FLOWER BLOOM MOBILE CARDS
-       Tap to reveal product details with petal animation
+       ELITE INTERACTIVE MOBILE CARDS
+       Tap for visual bloom animation (content always visible)
        ===================================================== */
 
-    /* Initially compact card - shows image only */
+    /* Product info ALWAYS visible */
     .product-info {
-        max-height: 0;
-        padding: 0 16px;
-        overflow: hidden;
+        padding: 18px 16px;
         text-align: left;
         display: flex;
         flex-direction: column;
         gap: 8px;
         background: linear-gradient(180deg, #ffffff 0%, #f8f5f0 100%);
         position: relative;
-        transition: all 0.5s cubic-bezier(0.68, -0.2, 0.265, 1.2);
-        opacity: 0;
+        transition: all 0.4s ease;
     }
 
-    /* Bloomed state - reveal product info */
+    /* Bloomed state - enhanced background */
     .product-card.bloomed .product-info {
-        max-height: 400px;
-        padding: 20px 16px;
-        opacity: 1;
+        background: linear-gradient(180deg, #ffffff 0%, #FFF8E1 100%);
     }
 
-    /* Bloom indicator overlay on image */
+    /* Small tap indicator in corner */
     .product-card::after {
-        content: '🌸 Tap to Bloom';
+        content: '✨ Tap';
         position: absolute;
-        bottom: 15px;
-        left: 50%;
-        transform: translateX(-50%);
+        top: 10px;
+        right: 10px;
         background: rgba(255, 255, 255, 0.95);
         color: var(--primary-color);
-        padding: 10px 20px;
-        border-radius: 25px;
-        font-size: 0.85rem;
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-size: 0.7rem;
         font-weight: 700;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
         z-index: 10;
-        transition: all 0.4s ease;
-        animation: pulseGlow 2s ease-in-out infinite;
+        transition: all 0.3s ease;
     }
 
-    @keyframes pulseGlow {
-
-        0%,
-        100% {
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-            transform: translateX(-50%) scale(1);
-        }
-
-        50% {
-            box-shadow: 0 4px 25px rgba(46, 125, 50, 0.4);
-            transform: translateX(-50%) scale(1.05);
-        }
-    }
-
-    /* Hide tap indicator when bloomed */
+    /* Change indicator when bloomed */
     .product-card.bloomed::after {
-        opacity: 0;
-        transform: translateX(-50%) scale(0);
+        content: '🌸 Bloomed!';
+        background: linear-gradient(135deg, #FF6B6B, #FFE66D);
+        color: white;
     }
 
     /* Petal decoration when bloomed */
