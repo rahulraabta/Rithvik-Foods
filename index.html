@@ -1634,6 +1634,54 @@
                 window.open(`https://wa.me/918431329733?text=${encodeURIComponent(msg)}`, '_blank');
             }
         }
+
+        // =====================================================
+        // FLOWER BLOOM EFFECT - Tap to reveal on mobile
+        // =====================================================
+        function initBloomEffect() {
+            // Only apply on mobile
+            if (window.innerWidth > 768) return;
+
+            const productCards = document.querySelectorAll('.product-card');
+
+            productCards.forEach(card => {
+                card.addEventListener('click', function (e) {
+                    // Don't bloom if clicking on buttons
+                    if (e.target.tagName === 'BUTTON' || e.target.closest('button')) {
+                        return;
+                    }
+
+                    // Toggle bloom state
+                    this.classList.toggle('bloomed');
+
+                    // Close other bloomed cards
+                    productCards.forEach(otherCard => {
+                        if (otherCard !== this && otherCard.classList.contains('bloomed')) {
+                            otherCard.classList.remove('bloomed');
+                        }
+                    });
+
+                    // Scroll into view smoothly
+                    if (this.classList.contains('bloomed')) {
+                        setTimeout(() => {
+                            this.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        }, 300);
+                    }
+                });
+            });
+        }
+
+        // Initialize bloom effect on page load
+        document.addEventListener('DOMContentLoaded', initBloomEffect);
+
+        // Re-initialize on resize (in case user rotates device)
+        window.addEventListener('resize', function () {
+            const cards = document.querySelectorAll('.product-card');
+            if (window.innerWidth > 768) {
+                // Remove bloom class on desktop
+                cards.forEach(card => card.classList.remove('bloomed'));
+            }
+        });
     </script>
 </body>
 

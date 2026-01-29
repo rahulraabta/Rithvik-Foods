@@ -1486,25 +1486,140 @@ img {
         z-index: 2;
     }
 
-    /* Premium info section */
+    /* =====================================================
+       ELITE FLOWER BLOOM MOBILE CARDS
+       Tap to reveal product details with petal animation
+       ===================================================== */
+
+    /* Initially compact card - shows image only */
     .product-info {
-        padding: 18px 16px;
+        max-height: 0;
+        padding: 0 16px;
+        overflow: hidden;
         text-align: left;
         display: flex;
         flex-direction: column;
         gap: 8px;
-        background: linear-gradient(180deg, #ffffff 0%, #f5f5f5 100%);
+        background: linear-gradient(180deg, #ffffff 0%, #f8f5f0 100%);
         position: relative;
+        transition: all 0.5s cubic-bezier(0.68, -0.2, 0.265, 1.2);
+        opacity: 0;
     }
 
-    /* Decorative corner */
-    .product-info::before {
-        content: '🌿';
+    /* Bloomed state - reveal product info */
+    .product-card.bloomed .product-info {
+        max-height: 400px;
+        padding: 20px 16px;
+        opacity: 1;
+    }
+
+    /* Bloom indicator overlay on image */
+    .product-card::after {
+        content: '🌸 Tap to Bloom';
         position: absolute;
-        top: -15px;
+        bottom: 15px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: rgba(255, 255, 255, 0.95);
+        color: var(--primary-color);
+        padding: 10px 20px;
+        border-radius: 25px;
+        font-size: 0.85rem;
+        font-weight: 700;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        z-index: 10;
+        transition: all 0.4s ease;
+        animation: pulseGlow 2s ease-in-out infinite;
+    }
+
+    @keyframes pulseGlow {
+
+        0%,
+        100% {
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transform: translateX(-50%) scale(1);
+        }
+
+        50% {
+            box-shadow: 0 4px 25px rgba(46, 125, 50, 0.4);
+            transform: translateX(-50%) scale(1.05);
+        }
+    }
+
+    /* Hide tap indicator when bloomed */
+    .product-card.bloomed::after {
+        opacity: 0;
+        transform: translateX(-50%) scale(0);
+    }
+
+    /* Petal decoration when bloomed */
+    .product-card.bloomed::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 6px;
+        background: linear-gradient(90deg,
+                #FF6B6B 0%,
+                #FFE66D 25%,
+                #4ECDC4 50%,
+                #A8E6CF 75%,
+                #FF6B6B 100%);
+        background-size: 200% 100%;
+        animation: petalShimmer 2s linear infinite;
+        z-index: 5;
+    }
+
+    @keyframes petalShimmer {
+        0% {
+            background-position: 0% 0%;
+        }
+
+        100% {
+            background-position: 200% 0%;
+        }
+    }
+
+    /* Card bloom animation */
+    .product-card {
+        cursor: pointer;
+        transition: all 0.5s cubic-bezier(0.68, -0.2, 0.265, 1.2);
+    }
+
+    .product-card.bloomed {
+        transform: scale(1.02);
+        box-shadow:
+            0 15px 40px rgba(0, 0, 0, 0.15),
+            0 5px 15px rgba(46, 125, 50, 0.1),
+            0 0 0 3px rgba(255, 107, 107, 0.2);
+    }
+
+    /* Decorative corner when bloomed */
+    .product-card.bloomed .product-info::before {
+        content: '🌺';
+        position: absolute;
+        top: -12px;
         right: 15px;
-        font-size: 1.8rem;
-        opacity: 0.15;
+        font-size: 1.5rem;
+        animation: floatPetal 3s ease-in-out infinite;
+    }
+
+    @keyframes floatPetal {
+
+        0%,
+        100% {
+            transform: translateY(0) rotate(0deg);
+        }
+
+        50% {
+            transform: translateY(-5px) rotate(10deg);
+        }
+    }
+
+    /* Product image adjusts when bloomed */
+    .product-card.bloomed .product-img {
+        height: 180px;
     }
 
     .product-title {
