@@ -131,6 +131,10 @@
                     <img src="cat_chutney.webp" alt="Chutney Powder" loading="lazy">
                     <h3>Chutney Powder</h3>
                 </div>
+                <div class="category-card" onclick="showCategory('pickle')">
+                    <img src="lemon_pickle.png" alt="Pickles" loading="lazy">
+                    <h3>Pickles</h3>
+                </div>
             </div>
 
             <div class="product-grid">
@@ -464,6 +468,83 @@
                                 <button class="qty-btn" onclick="adjustQty('mori', 1)">+</button>
                             </div>
                             <button onclick="addToCart('Moringa Chutney Powder', 69, 'qty-mori')"
+                                class="btn btn-whatsapp" style="width: 100%; border: none;">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 5. Pickles Section -->
+                <div id="cat-pickle" class="product-section">
+                    <h3 class="product-category-title">Pickles</h3>
+
+                    <!-- Lemon Pickle -->
+                    <div class="product-card animate-on-scroll">
+                        <img src="lemon_pickle.png" alt="Lemon Pickle" class="product-img" loading="lazy">
+                        <div class="product-info">
+                            <div>
+                                <span class="badge-natural">Tangy</span>
+                                <h3 class="product-title">Lemon Pickle</h3>
+                                <p>Traditional tangy lemon pickle made with authentic spices.</p>
+                            </div>
+                            <div style="margin-bottom: 10px;">
+                                <span style="font-size: 1.1rem; font-weight: 700; color: #2E7D32;">₹99</span> <span
+                                    style="font-size: 0.9rem; color: #757575;">(250gm)</span>
+                                <br><span class="shipping-text">+ shipping charges</span>
+                            </div>
+                            <div class="quantity-wrapper">
+                                <button class="qty-btn" onclick="adjustQty('lemon-pickle', -1)">-</button>
+                                <span id="qty-lemon-pickle" class="qty-display">1</span>
+                                <button class="qty-btn" onclick="adjustQty('lemon-pickle', 1)">+</button>
+                            </div>
+                            <button onclick="addToCart('Lemon Pickle (250g)', 99, 'qty-lemon-pickle')"
+                                class="btn btn-whatsapp" style="width: 100%; border: none;">Add to Cart</button>
+                        </div>
+                    </div>
+
+                    <!-- Mixed Veg Pickle -->
+                    <div class="product-card animate-on-scroll">
+                        <img src="mixed_veg_pickle.png" alt="Mixed Veg Pickle" class="product-img" loading="lazy">
+                        <div class="product-info">
+                            <div>
+                                <span class="badge-natural">Spicy</span>
+                                <h3 class="product-title">Mixed Veg Pickle</h3>
+                                <p>A flavorful mix of carrot, cauliflower, and green beans in spicy masala.</p>
+                            </div>
+                            <div style="margin-bottom: 10px;">
+                                <span style="font-size: 1.1rem; font-weight: 700; color: #2E7D32;">₹99</span> <span
+                                    style="font-size: 0.9rem; color: #757575;">(250gm)</span>
+                                <br><span class="shipping-text">+ shipping charges</span>
+                            </div>
+                            <div class="quantity-wrapper">
+                                <button class="qty-btn" onclick="adjustQty('mixed-veg-pickle', -1)">-</button>
+                                <span id="qty-mixed-veg-pickle" class="qty-display">1</span>
+                                <button class="qty-btn" onclick="adjustQty('mixed-veg-pickle', 1)">+</button>
+                            </div>
+                            <button onclick="addToCart('Mixed Veg Pickle (250g)', 99, 'qty-mixed-veg-pickle')"
+                                class="btn btn-whatsapp" style="width: 100%; border: none;">Add to Cart</button>
+                        </div>
+                    </div>
+
+                    <!-- HirLeKAyi Pickle -->
+                    <div class="product-card animate-on-scroll">
+                        <img src="hirlekayi_pickle.png" alt="HirLeKAyi Pickle" class="product-img" loading="lazy">
+                        <div class="product-info">
+                            <div>
+                                <span class="badge-natural">Traditional</span>
+                                <h3 class="product-title">HirLeKAyi Pickle (Citron)</h3>
+                                <p>Authentic Karnataka-style citron pickle with home-ground spices.</p>
+                            </div>
+                            <div style="margin-bottom: 10px;">
+                                <span style="font-size: 1.1rem; font-weight: 700; color: #2E7D32;">₹99</span> <span
+                                    style="font-size: 0.9rem; color: #757575;">(250gm)</span>
+                                <br><span class="shipping-text">+ shipping charges</span>
+                            </div>
+                            <div class="quantity-wrapper">
+                                <button class="qty-btn" onclick="adjustQty('hirlekayi-pickle', -1)">-</button>
+                                <span id="qty-hirlekayi-pickle" class="qty-display">1</span>
+                                <button class="qty-btn" onclick="adjustQty('hirlekayi-pickle', 1)">+</button>
+                            </div>
+                            <button onclick="addToCart('HirLeKAyi Pickle (250g)', 99, 'qty-hirlekayi-pickle')"
                                 class="btn btn-whatsapp" style="width: 100%; border: none;">Add to Cart</button>
                         </div>
                     </div>
@@ -1027,6 +1108,26 @@
             updateCartUI();
         }
 
+        // NEW: Adjust Quantity in Cart
+        function adjustCartQty(index, delta) {
+            const item = cart[index];
+            if (!item) return;
+
+            item.qty += delta;
+
+            if (item.qty < 1) {
+                if (confirm(`Remove ${item.name} from cart?`)) {
+                    removeFromCart(index);
+                    return;
+                } else {
+                    item.qty = 1; // Revert
+                }
+            }
+
+            saveCart();
+            updateCartUI();
+        }
+
         function updateCartUI() {
             // Update Badge
             const totalItems = cart.reduce((sum, item) => sum + item.qty, 0);
@@ -1048,7 +1149,13 @@
                 grandTotal += itemTotal;
                 html += `<tr>
                     <td>${item.name}</td>
-                    <td>${item.qty}</td>
+                    <td>
+                        <div class="quantity-wrapper" style="margin: 0; justify-content: flex-start; font-size: 0.9rem;">
+                            <button class="qty-btn" style="width: 24px; height: 24px; font-size: 1rem;" onclick="adjustCartQty(${index}, -1)">-</button>
+                            <span class="qty-display" style="width: 30px;">${item.qty}</span>
+                            <button class="qty-btn" style="width: 24px; height: 24px; font-size: 1rem;" onclick="adjustCartQty(${index}, 1)">+</button>
+                        </div>
+                    </td>
                     <td>₹${itemTotal}</td>
                     <td><button class="btn-remove" onclick="removeFromCart(${index})">Remove</button></td>
                 </tr>`;
