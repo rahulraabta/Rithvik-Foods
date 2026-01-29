@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Catalogue | Rithvik Foods</title>
+    <meta name="description"
+        content="Browse our complete catalogue of authentic homemade Indian masala powders, spices, and pickles.">
+    <link rel="stylesheet" href="main.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;700&family=Lato:wght@300;400;700&family=Playfair+Display:wght@400;700&display=swap"
+        rel="stylesheet">
+    <style>
+        .catalogue-header {
+            background: linear-gradient(135deg, var(--primary-color), #1B5E20);
+            color: white;
+            padding: 60px 20px;
+            text-align: center;
+        }
+
+        .catalogue-header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .catalogue-header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: opacity 0.3s;
+        }
+
+        .back-link:hover {
+            opacity: 0.8;
+        }
+
+        .catalogue-section {
+            padding: 40px 20px;
+        }
+
+        .category-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            color: var(--primary-color);
+            border-bottom: 3px solid var(--accent-color);
+            padding-bottom: 10px;
+            margin-bottom: 30px;
+        }
+
+        .catalogue-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+            margin-bottom: 50px;
+        }
+
+        .catalogue-item {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .catalogue-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .catalogue-item img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .catalogue-item-info {
+            padding: 20px;
+        }
+
+        .catalogue-item-info h3 {
+            font-family: 'Oswald', sans-serif;
+            font-size: 1.2rem;
+            margin-bottom: 8px;
+            color: var(--text-dark);
+        }
+
+        .catalogue-item-info p {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 12px;
+            line-height: 1.5;
+        }
+
+        .catalogue-price {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .price-tag {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #2E7D32;
+        }
+
+        .weight-tag {
+            font-size: 0.85rem;
+            color: #888;
+            background: #f5f5f5;
+            padding: 4px 10px;
+            border-radius: 20px;
+        }
+
+        .badge {
+            display: inline-block;
+            background: var(--accent-color);
+            color: white;
+            font-size: 0.75rem;
+            padding: 4px 10px;
+            border-radius: 20px;
+            margin-bottom: 10px;
+            font-weight: 500;
+        }
+
+        .badge.combo {
+            background: #FFEB3B;
+            color: #E65100;
+        }
+
+        .badge.unavailable {
+            background: #9E9E9E;
+        }
+
+        .original-price {
+            text-decoration: line-through;
+            color: #999;
+            font-size: 0.9rem;
+            margin-left: 8px;
+        }
+
+        .print-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            border-radius: 50px;
+            font-size: 1rem;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s;
+            z-index: 100;
+        }
+
+        .print-btn:hover {
+            transform: scale(1.05);
+        }
+
+        @media print {
+
+            .print-btn,
+            .back-link {
+                display: none;
+            }
+
+            .catalogue-item {
+                break-inside: avoid;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .catalogue-header h1 {
+                font-size: 1.8rem;
+            }
+
+            .catalogue-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 15px;
+            }
+
+            .catalogue-item img {
+                height: 150px;
+            }
+
+            .catalogue-item-info {
+                padding: 15px;
+            }
+
+            .catalogue-item-info h3 {
+                font-size: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .catalogue-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="catalogue-header">
+        <a href="index.html" class="back-link">← Back to Shop</a>
+        <h1>🌿 Product Catalogue</h1>
+        <p>Authentic Homemade Indian Spices & Pickles</p>
+    </header>
+
+    <main class="catalogue-section">
+        <div class="container">
+
+            <!-- Combo Packs -->
+            <h2 class="category-title">🎁 Combo Packs</h2>
+            <div class="catalogue-grid">
+                <div class="catalogue-item">
+                    <img src="combo_ragi_huch_v2.png" alt="Ragi & Huchellu Combo">
+                    <div class="catalogue-item-info">
+                        <span class="badge combo">Super Saver</span>
+                        <h3>Ragi Dosa Premix + Huchellu Chutney</h3>
+                        <p>Authentic Millet Dosa & Chutney Combo (250g + 50g)</p>
+                        <div class="catalogue-price">
+                            <span class="price-tag">₹99 <span class="original-price">₹115</span></span>
+                            <span class="weight-tag">300g</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="catalogue-item">
+                    <img src="combo_ragi_chutney.png" alt="Ragi & Chutney Combo">
+                    <div class="catalogue-item-info">
+                        <span class="badge combo">Super Saver</span>
+                        <h3>Ragi Dosa Premix + Chutney Powder</h3>
+                        <p>Authentic Millet Dosa & Spicy Chutney Combo (250g + 50g)</p>
+                        <div class="catalogue-price">
+                            <span class="price-tag">₹99 <span class="original-price">₹115</span></span>
+                            <span class="weight-tag">300g</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Health Powders -->
+            <h2 class="category-title">💪 Health Powders</h2>
+            <div class="catalogue-grid">
+                <div class="catalogue-item">
+                    <img src="amla_juice.webp" alt="Amla Juice Powder">
+                    <div class="catalogue-item-info">
+                        <span class="badge">Healthy</span>
+                        <h3>Amla Juice Powder</h3>
+                        <p>Immunity booster rich in Vitamin C and antioxidants.</p>
+                        <div class="catalogue-price">
+                            <span class="price-tag">₹149</span>
+                            <span class="weight-tag">100g</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="catalogue-item">
+                    <img src="black_rice_powder.png" alt="Black Rice Weight Loss Powder">
+                    <div class="catalogue-item-info">
+                        <span class="badge">Weight Loss</span>
+                        <h3>Black Rice Weight Loss Powder</h3>
+                        <p>Nutrient-rich black rice powder for healthy weight management.</p>
+                        <div class="catalogue-price">
+                            <span class="price-tag">₹149</span>
+                            <span class="weight-tag">100g</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="catalogue-item">
+                    <img src="abc_malt.webp" alt="ABC Malt Powder">
+                    <div class="catalogue-item-info">
+                        <span class="badge unavailable">Coming Soon</span>
+                        <h3>ABC Malt Powder</h3>
+                        <p>Apple Beetroot Carrot natural health mix.</p>
+                        <div class="catalogue-price">
+                            <span class="price-tag" style="color: #999;">Available Soon</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Premix -->
+            <h2 class="category-title">🥞 Premix</h2>
+            <div class="catalogue-grid">
+                <div class="catalogue-item">
+                    <img src="ragi_premix.webp" alt="Ragi Dosa Premix">
+                    <div class="catalogue-item-info">
+                        <span class="badge">Instant</span>
+                        <h3>Ragi Dosa & Idli Premix</h3>
+                        <p>Healthy millet breakfast ready in minutes.</p>
+                        <div class="catalogue-price">
+                            <span class="price-tag">₹75</span>
+                            <span class="weight-tag">250g</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="catalogue-item">
+                    <img src="rava_idli.webp" alt="Rava Idli Premix">
+                    <div class="catalogue-item-info">
+                        <span class="badge">Tasty</span>
+                        <h3>Rava Idli Premix</h3>
+                        <p>Instant mix for fluffy and soft Rava Idlis.</p>
+                        <div class="catalogue-price">
+                            <span class="price-tag">₹59</span>
+                            <span class="weight-tag">250g</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Masala Powders -->
+            <h2 class="category-title">🌶️ Masala Powders</h2>
+            <div class="catalogue-grid">
+                <div class="catalogue-item">
+                    <img src="vangi_bath.webp" alt="Vangi Bath Powder">
+                    <div class="catalogue-item-info">
+                        <span class="badge">Best Seller</span>
+                        <h3>Vangi Bath Powder</h3>
+                        <p>Authentic blend for the perfect brinjal rice dish.</p>
+                        <div class="catalogue-price">
+                            <span class="price-tag">₹69</span>
+                            <span class="weight-tag">100g</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="catalogue-item">
+                    <img src="bisi_bele.webp" alt="Bisi Bele Bath Powder">
+                    <div class="catalogue-item-info">
+                        <span class="badge">Premium</span>
+                        <h3>Bisi Bele Bath Powder</h3>
+                        <p>Aromatic spices for the classic lentil-rice delicacy.</p>
+                        <div class="catalogue-price">
+                            <span class="price-tag">₹69</span>
+                            <span class="weight-tag">100g</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="catalogue-item">
+                    <img src="puliyogare.webp" alt="Puliyogare Powder">
+                    <div class="catalogue-item-info">
+                        <span class="badge">Tangy</span>
+                        <h3>Puliyogare Powder</h3>
+                        <p>Traditional tamarind rice mix with authentic spices.</p>
+                        <div class="catalogue-price">
+                            <span class="price-tag">₹69</span>
+                            <span class="weight-tag">100g</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Chutney Powders -->
+            <h2 class="category-title">🥣 Chutney Powders</h2>
+            <div class="catalogue-grid">
+                <div class="catalogue-item">
+                    <img src="kadlebele.webp" alt="Kadlebele Chutney Powder">
+                    <div class="catalogue-item-info">
+                        <span class="badge">Spicy</span>
+                        <h3>Kadlebele Chutney Powder</h3>
+                        <p>Flavorful Channadaal spice mix for rice and dosa.</p>
+                        <div class="catalogue-price">
+                            <span class="price-tag">₹69</span>
+                            <span class="weight-tag">100g</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="catalogue-item">
+                    <img src="huchellu.webp" alt="Huchellu Chutney Powder">
+                    <div class="catalogue-item-info">
+                        <span class="badge">Traditional</span>
+                        <h3>Huchellu Chutney Powder (Niger Seeds)</h3>
+                        <p>Rustic and aromatic powder made from Niger seeds.</p>
+                        <div class="catalogue-price">
+                            <span class="price-tag">₹69</span>
+                            <span class="weight-tag">100g</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="catalogue-item">
+                    <img src="karibevu.webp" alt="Karibevu Chutney Powder">
+                    <div class="catalogue-item-info">
+                        <span class="badge">Aromatic</span>
+                        <h3>Karibevu Chutney Powder (Curry Leaves)</h3>
+                        <p>Healthy curry leaves spice blend.</p>
+                        <div class="catalogue-price">
+                            <span class="price-tag">₹69</span>
+                            <span class="weight-tag">100g</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="catalogue-item">
+                    <img src="moringa.webp" alt="Moringa Chutney Powder">
+                    <div class="catalogue-item-info">
+                        <span class="badge">Superfood</span>
+                        <h3>Moringa Chutney Powder</h3>
+                        <p>Nutrient-rich drumstick leaves spice powder.</p>
+                        <div class="catalogue-price">
+                            <span class="price-tag">₹69</span>
+                            <span class="weight-tag">100g</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pickles -->
+            <h2 class="category-title">🥒 Pickles</h2>
+            <div class="catalogue-grid">
+                <div class="catalogue-item">
+                    <img src="lemon_pickle.png" alt="Lemon Pickle">
+                    <div class="catalogue-item-info">
+                        <span class="badge">Tangy</span>
+                        <h3>Lemon Pickle</h3>
+                        <p>Traditional tangy lemon pickle made with authentic spices.</p>
+                        <div class="catalogue-price">
+                            <span class="price-tag">₹99</span>
+                            <span class="weight-tag">250g</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="catalogue-item">
+                    <img src="mixed_veg_pickle.png" alt="Mixed Veg Pickle">
+                    <div class="catalogue-item-info">
+                        <span class="badge">Spicy</span>
+                        <h3>Mixed Veg Pickle</h3>
+                        <p>A flavorful mix of carrot, cauliflower, and green beans.</p>
+                        <div class="catalogue-price">
+                            <span class="price-tag">₹99</span>
+                            <span class="weight-tag">250g</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="catalogue-item">
+                    <img src="hirlekayi_pickle.png" alt="Hirlekayi Pickle">
+                    <div class="catalogue-item-info">
+                        <span class="badge">Traditional</span>
+                        <h3>Hirlekayi Pickle (Citron)</h3>
+                        <p>Authentic Karnataka-style citron pickle with home-ground spices.</p>
+                        <div class="catalogue-price">
+                            <span class="price-tag">₹99</span>
+                            <span class="weight-tag">250g</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer" style="text-align: center; padding: 30px;">
+        <p style="color: #ccc;">📞 +91 84313 29733 | 📍 Mysuru, Karnataka</p>
+        <p style="color: #888; margin-top: 10px;">© 2024 Rithvik Foods. All prices include GST.</p>
+    </footer>
+
+    <!-- Print Button -->
+    <button class="print-btn" onclick="window.print()">🖨️ Print Catalogue</button>
+
+</body>
+
+</html>
