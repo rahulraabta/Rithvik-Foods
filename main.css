@@ -860,16 +860,16 @@ img {
     width: 100%;
 }
 
-/* Product Sections - Visible by Default */
+/* Product Sections - Hidden until category selected */
 .product-section {
-    display: grid;
-    /* FIXED: Changed from display: none - products were hidden */
+    display: none;
+    /* Hidden by default, shown when category is clicked */
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 30px;
     animation: fadeIn 0.5s ease;
 }
 
-/* Active class now only used for category filtering (if implemented) */
+/* Show when active class is added via JavaScript */
 .product-section.active {
     display: grid;
 }
