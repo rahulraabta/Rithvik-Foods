@@ -959,12 +959,21 @@
         function checkSession() {
             const sessionUser = localStorage.getItem('rithvik_current_user');
             if (sessionUser) {
-                currentUser = JSON.parse(sessionUser);
-                updateAuthUI();
-                loadUserCart(); // Load THIS user's cart
+                try {
+                    currentUser = JSON.parse(sessionUser);
+                    updateAuthUI();
+                    loadUserCart(); // Load THIS user's cart
+                } catch (e) {
+                    console.error('Session parse error:', e);
+                    currentUser = null;
+                    loadCart(); // Fallback to guest cart
+                }
             } else {
                 loadCart(); // Load guest cart
             }
+
+            // DEFENSIVE: Ensure cart UI is always up to date
+            updateCartUI();
         }
 
         function updateAuthUI() {
@@ -1100,25 +1109,33 @@
 
         function loadUserCart() {
             if (!currentUser) return;
-            const savedCart = localStorage.getItem(`rithvik_cart_${currentUser.email}`);
-            if (savedCart) {
-                cart = JSON.parse(savedCart);
-                updateCartUI();
-            } else {
-                cart = []; // Empty if new user
-                updateCartUI();
+            try {
+                const savedCart = localStorage.getItem(`rithvik_cart_${currentUser.email}`);
+                if (savedCart) {
+                    const parsedCart = JSON.parse(savedCart);
+                    if (Array.isArray(parsedCart)) {
+                        cart = parsedCart;
+                    }
+                }
+            } catch (e) {
+                console.error('Error loading user cart:', e);
             }
+            updateCartUI();
         }
 
         function loadCart() {
-            const savedCart = localStorage.getItem('rithvik_cart');
-            if (savedCart) {
-                cart = JSON.parse(savedCart);
-                updateCartUI();
-            } else {
-                cart = [];
-                updateCartUI();
+            try {
+                const savedCart = localStorage.getItem('rithvik_cart');
+                if (savedCart) {
+                    const parsedCart = JSON.parse(savedCart);
+                    if (Array.isArray(parsedCart)) {
+                        cart = parsedCart;
+                    }
+                }
+            } catch (e) {
+                console.error('Error loading guest cart:', e);
             }
+            updateCartUI();
         }
 
         // --- Shopping Cart Logic ---
