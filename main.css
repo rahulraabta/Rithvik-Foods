@@ -14,6 +14,18 @@
     --text-light: #757575;
     --white: #FFFFFF;
 
+    /* Premium Spice Colors - FIXED: These were missing */
+    --cardamom: #2E7D32;
+    /* Green */
+    --turmeric: #FFB300;
+    /* Golden Yellow */
+    --chili: #D32F2F;
+    /* Red */
+    --saffron: #FF9800;
+    /* Orange */
+    --cream: #FFF8E1;
+    /* Cream */
+
     /* Typography */
     --font-heading: 'Playfair Display', serif;
     --font-body: 'Lato', sans-serif;
@@ -848,15 +860,16 @@ img {
     width: 100%;
 }
 
-/* Hidden Product Sections */
+/* Product Sections - Visible by Default */
 .product-section {
-    display: none;
-    /* Hidden by default */
+    display: grid;
+    /* FIXED: Changed from display: none - products were hidden */
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 30px;
     animation: fadeIn 0.5s ease;
 }
 
+/* Active class now only used for category filtering (if implemented) */
 .product-section.active {
     display: grid;
 }
@@ -1612,16 +1625,8 @@ img {
    PREMIUM DESIGN ENHANCEMENTS - 2024
    ===================================================== */
 
-/* Enhanced Color Variables */
-:root {
-    --saffron: #FF9933;
-    --turmeric: #FFB300;
-    --chili: #D84315;
-    --cardamom: #2E7D32;
-    --cream: #FFF8E1;
-    --glass-bg: rgba(255, 255, 255, 0.15);
-    --glass-border: rgba(255, 255, 255, 0.3);
-}
+/* Note: Premium spice color variables (--saffron, --turmeric, --chili, --cardamom, --cream)
+   are now defined in the main :root section at the top of this file */
 
 /* =====================================================
    CTA BUTTON GROUP - Aligned Horizontally

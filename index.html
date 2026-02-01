@@ -774,7 +774,8 @@
                 el.style.transform = 'none';
             });
 
-            updateCartUI();
+            // CRITICAL FIX: Initialize user session and cart
+            checkSession();
         });
 
         // --- Mobile Menu Logic ---
