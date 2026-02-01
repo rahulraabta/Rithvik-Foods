@@ -67,6 +67,30 @@
         </div>
     </header>
 
+    <!-- Trust Badges Strip - Social Proof -->
+    <div class="trust-badges">
+        <div class="trust-badge">
+            <span class="icon">🌿</span>
+            <span>100% Natural</span>
+        </div>
+        <div class="trust-badge">
+            <span class="icon">🛡️</span>
+            <span>No Preservatives</span>
+        </div>
+        <div class="trust-badge">
+            <span class="icon">❤️</span>
+            <span>Homemade with Love</span>
+        </div>
+        <div class="trust-badge">
+            <span class="icon">⭐</span>
+            <span>5000+ Happy Customers</span>
+        </div>
+        <div class="trust-badge">
+            <span class="icon">🚚</span>
+            <span>Fast Delivery</span>
+        </div>
+    </div>
+
     <!-- Story Section -->
     <section id="about" class="story-section text-center">
         <div class="container">
@@ -792,15 +816,49 @@
         </div>
     </div>
 
-    <!-- Simple Scroll Animation Script -->
+    <!-- Elite Design Script - Premium Animations -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            // IMMEDIATE VISIBILITY FIX
-            // We are disabling the scroll animation temporarily to ensure the site LOADS.
+            // ----- ELITE SCROLL ANIMATIONS -----
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+
+            const scrollObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, observerOptions);
+
             document.querySelectorAll('.animate-on-scroll').forEach(el => {
-                el.classList.add('visible');
-                el.style.opacity = '1';
-                el.style.transform = 'none';
+                scrollObserver.observe(el);
+            });
+
+            // ----- STICKY NAVBAR WITH BLUR -----
+            const navbar = document.querySelector('.navbar');
+            let lastScrollY = 0;
+
+            window.addEventListener('scroll', () => {
+                const currentScrollY = window.scrollY;
+
+                if (currentScrollY > 100) {
+                    navbar.classList.add('scrolled');
+                } else {
+                    navbar.classList.remove('scrolled');
+                }
+
+                lastScrollY = currentScrollY;
+            }, { passive: true });
+
+            // ----- TRUST BADGES HOVER STAGGER -----
+            const trustBadges = document.querySelectorAll('.trust-badge');
+            trustBadges.forEach((badge, index) => {
+                badge.style.animationDelay = `${index * 0.1}s`;
             });
 
             // CRITICAL FIX: Initialize user session and cart
