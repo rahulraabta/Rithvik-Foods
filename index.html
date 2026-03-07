@@ -955,6 +955,16 @@
         let currentUser = null; // Holds the logged-in user object
         let cart = [];
 
+        // --- Security Utilities ---
+        async function hashPassword(password) {
+            const encoder = new TextEncoder();
+            const data = encoder.encode(password);
+            const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+            const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+            return hashHex;
+        }
+
         // 1. Session Management
         function checkSession() {
             const sessionUser = localStorage.getItem('rithvik_current_user');
@@ -1018,16 +1028,16 @@
         }
 
         // 3. Signup Handler
-        function handleSignup(e) {
+        async function handleSignup(e) {
             e.preventDefault();
             const name = document.getElementById('signupName').value;
             const email = document.getElementById('signupEmail').value;
             const phone = document.getElementById('signupPhone').value;
-            const password = document.getElementById('signupPassword').value;
+            const plainPassword = document.getElementById('signupPassword').value;
 
             // Strong Password Validation
             const strongPasswordRegex = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,}$/;
-            if (!strongPasswordRegex.test(password)) {
+            if (!strongPasswordRegex.test(plainPassword)) {
                 alert("Password is too weak!\n- At least 8 characters\n- Include a number\n- Include a special character (!@#$%)");
                 return;
             }
@@ -1044,7 +1054,10 @@
             // Generate Customer ID (e.g., RF-4821)
             const customerId = 'RF-' + Math.floor(1000 + Math.random() * 9000);
 
-            const newUser = { id: customerId, name, email, phone, password }; // Note: In real app, never save plain password!
+            // Hash the password
+            const passwordHash = await hashPassword(plainPassword);
+
+            const newUser = { id: customerId, name, email, phone, password: passwordHash };
             usersDB.push(newUser);
             localStorage.setItem('rithvik_users_db', JSON.stringify(usersDB));
 
@@ -1053,14 +1066,17 @@
         }
 
         // 4. Login Handler
-        function handleLogin(e) {
+        async function handleLogin(e) {
             e.preventDefault();
             const identifier = document.getElementById('loginEmail').value; // email or phone
-            const password = document.getElementById('loginPassword').value;
+            const plainPassword = document.getElementById('loginPassword').value;
 
             const usersDB = JSON.parse(localStorage.getItem('rithvik_users_db') || '[]');
 
-            const user = usersDB.find(u => (u.email === identifier || u.phone === identifier) && u.password === password);
+            // Hash the password for comparison
+            const passwordHash = await hashPassword(plainPassword);
+
+            const user = usersDB.find(u => (u.email === identifier || u.phone === identifier) && u.password === passwordHash);
 
             if (user) {
                 currentUser = user;
