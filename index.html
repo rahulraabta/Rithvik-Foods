@@ -1017,8 +1017,16 @@
             document.getElementById('signupView').style.display = view === 'signup' ? 'block' : 'none';
         }
 
+        async function hashPassword(password) {
+            const msgBuffer = new TextEncoder().encode(password);
+            const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+            const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+            return hashHex;
+        }
+
         // 3. Signup Handler
-        function handleSignup(e) {
+        async function handleSignup(e) {
             e.preventDefault();
             const name = document.getElementById('signupName').value;
             const email = document.getElementById('signupEmail').value;
@@ -1044,7 +1052,8 @@
             // Generate Customer ID (e.g., RF-4821)
             const customerId = 'RF-' + Math.floor(1000 + Math.random() * 9000);
 
-            const newUser = { id: customerId, name, email, phone, password }; // Note: In real app, never save plain password!
+            const hashedPassword = await hashPassword(password);
+            const newUser = { id: customerId, name, email, phone, password: hashedPassword };
             usersDB.push(newUser);
             localStorage.setItem('rithvik_users_db', JSON.stringify(usersDB));
 
@@ -1053,14 +1062,26 @@
         }
 
         // 4. Login Handler
-        function handleLogin(e) {
+        async function handleLogin(e) {
             e.preventDefault();
             const identifier = document.getElementById('loginEmail').value; // email or phone
             const password = document.getElementById('loginPassword').value;
 
             const usersDB = JSON.parse(localStorage.getItem('rithvik_users_db') || '[]');
 
-            const user = usersDB.find(u => (u.email === identifier || u.phone === identifier) && u.password === password);
+            const hashedPassword = await hashPassword(password);
+
+            let user = usersDB.find(u => (u.email === identifier || u.phone === identifier) && u.password === hashedPassword);
+
+            // Fallback to plain-text password for backward compatibility
+            if (!user) {
+                user = usersDB.find(u => (u.email === identifier || u.phone === identifier) && u.password === password);
+                if (user) {
+                    // Transparently upgrade to hashed password
+                    user.password = hashedPassword;
+                    localStorage.setItem('rithvik_users_db', JSON.stringify(usersDB));
+                }
+            }
 
             if (user) {
                 currentUser = user;
