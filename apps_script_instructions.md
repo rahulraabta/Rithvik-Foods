@@ -10,7 +10,7 @@ Please copy the following code into your Google Apps Script project (Extensions 
 5.  Who has access: **Anyone** (this is critical for the website to send data).
 6.  Click **Deploy** and copy the **Web App URL**.
 7.  **Ensure your Google Sheet HEADER ROW (Row 1) has these exact columns:**
-    `Date`, `Order ID`, `Customer ID`, `Name`, `Phone`, `Address`, `City`, `State`, `Zip`, `Delivery Date`, `Items`, `Total`, `Item Count`, `Payment Mode`, `Order Status`
+    `Date`, `Order ID`, `Customer ID`, `Name`, `Phone`, `Address`, `City`, `State`, `Zip`, `Delivery Date`, `Items`, `Total`, `Item Count`, `Payment Mode`, `Order Status`, `Cancel Token`
 
 ```javascript
 // SHEET CONFIGURATION
@@ -90,6 +90,9 @@ function handleOrderCreation(sheet, data) {
       case 'order status':
         newRow.push('Placed'); // Default status
         break;
+      case 'cancel token':
+        newRow.push(data.cancelToken || '');
+        break;
       default:
         newRow.push(''); // Empty string for unknown columns
     }
@@ -104,10 +107,11 @@ function handleOrderCreation(sheet, data) {
 
 function handleCancellation(sheet, data) {
   var orderId = data.orderId;
+  var cancelToken = data.cancelToken;
   
-  if (!orderId) {
+  if (!orderId || !cancelToken) {
     return ContentService
-      .createTextOutput(JSON.stringify({ 'result': 'error', 'error': 'No Order ID provided' }))
+      .createTextOutput(JSON.stringify({ 'result': 'error', 'error': 'Order ID or Cancel Token missing' }))
       .setMimeType(ContentService.MimeType.JSON);
   }
 
@@ -115,17 +119,19 @@ function handleCancellation(sheet, data) {
   var values = dataRange.getValues();
   var headers = values[0];
   
-  // Find "Order ID" column index
+  // Find column indices
   var orderIdColIndex = -1;
   var statusColIndex = -1;
+  var cancelTokenColIndex = -1;
 
   for (var i = 0; i < headers.length; i++) {
     var h = headers[i].toString().toLowerCase();
     if (h === 'order id') orderIdColIndex = i;
     if (h === 'order status') statusColIndex = i;
+    if (h === 'cancel token') cancelTokenColIndex = i;
   }
 
-  if (orderIdColIndex === -1 || statusColIndex === -1) {
+  if (orderIdColIndex === -1 || statusColIndex === -1 || cancelTokenColIndex === -1) {
      return ContentService
       .createTextOutput(JSON.stringify({ 'result': 'error', 'error': 'Columns not found' }))
       .setMimeType(ContentService.MimeType.JSON);
@@ -135,6 +141,13 @@ function handleCancellation(sheet, data) {
   // Start from row 1 (excluding header row 0)
   for (var i = 1; i < values.length; i++) {
     if (values[i][orderIdColIndex].toString() === orderId.toString()) {
+      // Verify the cancel token matches
+      if (values[i][cancelTokenColIndex].toString() !== cancelToken.toString()) {
+        return ContentService
+          .createTextOutput(JSON.stringify({ 'result': 'error', 'error': 'Unauthorized: Cancel Token mismatch' }))
+          .setMimeType(ContentService.MimeType.JSON);
+      }
+
       // Row found (i + 1 because sheets are 1-indexed)
       var rowIndex = i + 1;
       

@@ -1508,6 +1508,9 @@
             // Generate a unique Order ID based on timestamp
             const orderId = 'ORD-' + Date.now().toString().slice(-6);
 
+            // Generate a secure, unique cancellation token for this specific order
+            const cancelToken = crypto.getRandomValues(new Uint32Array(4)).join('-');
+
             const newOrder = {
                 id: orderId,
                 date: new Date().toISOString(),
@@ -1515,7 +1518,8 @@
                 total: finalTotal,
                 status: 'Placed',
                 paymentMode: paymentMode,
-                deliveryDate: deliveryDate
+                deliveryDate: deliveryDate,
+                cancelToken: cancelToken // Store token locally to allow cancellation later
             };
 
             saveOrderToHistory(newOrder);
@@ -1526,6 +1530,7 @@
             const orderData = {
                 action: 'create', // Start Action
                 orderId: orderId, // Include ID
+                cancelToken: cancelToken, // Send secret token for server-side verification
                 date: new Date().toLocaleString(),
                 customerId: custId,
                 name: name,
@@ -1701,7 +1706,8 @@
                     headers: { 'Content-Type': 'text/plain' },
                     body: JSON.stringify({
                         action: 'cancel',
-                        orderId: order.id
+                        orderId: order.id,
+                        cancelToken: order.cancelToken // Send the secure token for verification
                     })
                 }).catch(e => console.error("Cancellation Sync Error:", e));
 
