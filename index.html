@@ -7,6 +7,11 @@
     <title>Rithvik Foods | Pure, Authentic, Homemade</title>
     <meta name="description"
         content="Authentic homemade Indian masala powders and spices. 100% Pure, No Artificial Colors or Preservatives.">
+    <!-- Security Headers -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: https: 'unsafe-inline' 'unsafe-eval';">
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="X-Frame-Options" content="DENY">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
     <link rel="stylesheet" href="main.css">
     <style>
         /* CRITICAL FIX: Ensure content is visible immediately if JS fails */
@@ -160,6 +165,10 @@
                     <img src="lemon_pickle.png" alt="Pickles" loading="lazy">
                     <h3>Pickles</h3>
                 </div>
+                <div class="category-card" onclick="showCategory('skincare')">
+                    <img src="cat_health.webp" alt="Skin & Hair Packs" loading="lazy">
+                    <h3>Skin & Hair Packs</h3>
+                </div>
             </div>
 
             <div class="product-grid">
@@ -284,6 +293,103 @@
                                 <button class="qty-btn" onclick="adjustQty('blackrice', 1)">+</button>
                             </div>
                             <button onclick="addToCart('Black Rice Weight Loss Powder (250g)', 250, 'qty-blackrice')"
+                                class="btn btn-whatsapp" style="width: 100%; border: none;">Add to Cart</button>
+                        </div>
+                    </div>
+
+                    <!-- Multigrain Atta -->
+                    <div class="product-card animate-on-scroll">
+                        <img src="multigrain_atta.jpg" alt="Multigrain Atta" class="product-img" loading="lazy">
+                        <div class="product-info">
+                            <div>
+                                <span class="badge-natural">Nutritious</span>
+                                <h3 class="product-title">Multigrain Atta</h3>
+                                <p>Nutritious flour blend for soft and wholesome everyday rotis.</p>
+                            </div>
+                            <div style="margin-bottom: 10px;">
+                                <span style="font-size: 1.1rem; font-weight: 700; color: #2E7D32;">₹199</span> <span
+                                    style="font-size: 0.9rem; color: #757575;">(1kg)</span>
+                                <br><span class="shipping-text">+ shipping charges</span>
+                            </div>
+                            <div class="quantity-wrapper">
+                                <button class="qty-btn" onclick="adjustQty('atta', -1)">-</button>
+                                <span id="qty-atta" class="qty-display">1</span>
+                                <button class="qty-btn" onclick="adjustQty('atta', 1)">+</button>
+                            </div>
+                            <button onclick="addToCart('Multigrain Atta (1kg)', 199, 'qty-atta')"
+                                class="btn btn-whatsapp" style="width: 100%; border: none;">Add to Cart</button>
+                        </div>
+                    </div>
+
+                    <!-- Siridhanya Mix -->
+                    <div class="product-card animate-on-scroll">
+                        <img src="siridhanya_mix.jpg" alt="Siridhanya Mix" class="product-img" loading="lazy">
+                        <div class="product-info">
+                            <div>
+                                <span class="badge-natural">Healthy</span>
+                                <h3 class="product-title">Siridhanya Mix</h3>
+                                <p>Healthy millet-based mix for balanced daily nutrition.</p>
+                            </div>
+                            <div style="margin-bottom: 10px;">
+                                <span style="font-size: 1.1rem; font-weight: 700; color: #2E7D32;">₹149</span> <span
+                                    style="font-size: 0.9rem; color: #757575;">(500g)</span>
+                                <br><span class="shipping-text">+ shipping charges</span>
+                            </div>
+                            <div class="quantity-wrapper">
+                                <button class="qty-btn" onclick="adjustQty('siridhanya', -1)">-</button>
+                                <span id="qty-siridhanya" class="qty-display">1</span>
+                                <button class="qty-btn" onclick="adjustQty('siridhanya', 1)">+</button>
+                            </div>
+                            <button onclick="addToCart('Siridhanya Mix (500g)', 149, 'qty-siridhanya')"
+                                class="btn btn-whatsapp" style="width: 100%; border: none;">Add to Cart</button>
+                        </div>
+                    </div>
+
+                    <!-- Ragi Choco Mix -->
+                    <div class="product-card animate-on-scroll">
+                        <img src="ragi_choco_mix.jpg" alt="Ragi Choco Mix" class="product-img" loading="lazy">
+                        <div class="product-info">
+                            <div>
+                                <span class="badge-natural">Kids Favorite</span>
+                                <h3 class="product-title">Ragi Choco Mix</h3>
+                                <p>Ragi and chocolate health drink mix for kids and adults.</p>
+                            </div>
+                            <div style="margin-bottom: 10px;">
+                                <span style="font-size: 1.1rem; font-weight: 700; color: #2E7D32;">₹199</span> <span
+                                    style="font-size: 0.9rem; color: #757575;">(250g)</span>
+                                <br><span class="shipping-text">+ shipping charges</span>
+                            </div>
+                            <div class="quantity-wrapper">
+                                <button class="qty-btn" onclick="adjustQty('ragichoco', -1)">-</button>
+                                <span id="qty-ragichoco" class="qty-display">1</span>
+                                <button class="qty-btn" onclick="adjustQty('ragichoco', 1)">+</button>
+                            </div>
+                            <button onclick="addToCart('Ragi Choco Mix (250g)', 199, 'qty-ragichoco')"
+                                class="btn btn-whatsapp" style="width: 100%; border: none;">Add to Cart</button>
+                        </div>
+                    </div>
+
+                    <!-- Jave Godhi Flour -->
+                    <div class="product-card animate-on-scroll">
+                        <!-- TODO: Replace placeholder image below manually -->
+                        <img src="cat_health.webp" alt="Jave Godhi Flour" class="product-img" loading="lazy">
+                        <div class="product-info">
+                            <div>
+                                <span class="badge-natural">Wholesome</span>
+                                <h3 class="product-title">Jave Godhi Flour</h3>
+                                <p>Wholesome flour for regular home cooking.</p>
+                            </div>
+                            <div style="margin-bottom: 10px;">
+                                <span style="font-size: 1.1rem; font-weight: 700; color: #2E7D32;">₹149</span> <span
+                                    style="font-size: 0.9rem; color: #757575;">(500g)</span>
+                                <br><span class="shipping-text">+ shipping charges</span>
+                            </div>
+                            <div class="quantity-wrapper">
+                                <button class="qty-btn" onclick="adjustQty('javegodhi', -1)">-</button>
+                                <span id="qty-javegodhi" class="qty-display">1</span>
+                                <button class="qty-btn" onclick="adjustQty('javegodhi', 1)">+</button>
+                            </div>
+                            <button onclick="addToCart('Jave Godhi Flour (500g)', 149, 'qty-javegodhi')"
                                 class="btn btn-whatsapp" style="width: 100%; border: none;">Add to Cart</button>
                         </div>
                     </div>
@@ -419,6 +525,54 @@
                                 style="width: 100%; border: none;">Add to Cart</button>
                         </div>
                     </div>
+
+                    <!-- Gojjavalakki Premix -->
+                    <div class="product-card animate-on-scroll">
+                        <img src="gojjavalakki_premix.jpg" alt="Gojjavalakki Premix" class="product-img" loading="lazy">
+                        <div class="product-info">
+                            <div>
+                                <span class="badge-natural">Instant</span>
+                                <h3 class="product-title">Gojjavalakki Premix</h3>
+                                <p>Instant tangy and spicy avalakki mix for a quick traditional meal.</p>
+                            </div>
+                            <div style="margin-bottom: 10px;">
+                                <span style="font-size: 1.1rem; font-weight: 700; color: #2E7D32;">₹99</span> <span
+                                    style="font-size: 0.9rem; color: #757575;">(250gm)</span>
+                                <br><span class="shipping-text">+ shipping charges</span>
+                            </div>
+                            <div class="quantity-wrapper">
+                                <button class="qty-btn" onclick="adjustQty('gojjavalakki', -1)">-</button>
+                                <span id="qty-gojjavalakki" class="qty-display">1</span>
+                                <button class="qty-btn" onclick="adjustQty('gojjavalakki', 1)">+</button>
+                            </div>
+                            <button onclick="addToCart('Gojjavalakki Premix (250g)', 99, 'qty-gojjavalakki')"
+                                class="btn btn-whatsapp" style="width: 100%; border: none;">Add to Cart</button>
+                        </div>
+                    </div>
+
+                    <!-- Avalakki Gojju -->
+                    <div class="product-card animate-on-scroll">
+                        <img src="avalakki_gojju.webp" alt="Avalakki Gojju" class="product-img" loading="lazy">
+                        <div class="product-info">
+                            <div>
+                                <span class="badge-natural">Traditional</span>
+                                <h3 class="product-title">Avalakki Gojju</h3>
+                                <p>Authentic spice blend for delicious Avalakki / Poha.</p>
+                            </div>
+                            <div style="margin-bottom: 10px;">
+                                <span style="font-size: 1.1rem; font-weight: 700; color: #2E7D32;">₹149</span> <span
+                                    style="font-size: 0.9rem; color: #757575;">(100gm)</span>
+                                <br><span class="shipping-text">+ shipping charges</span>
+                            </div>
+                            <div class="quantity-wrapper">
+                                <button class="qty-btn" onclick="adjustQty('avalakki', -1)">-</button>
+                                <span id="qty-avalakki" class="qty-display">1</span>
+                                <button class="qty-btn" onclick="adjustQty('avalakki', 1)">+</button>
+                            </div>
+                            <button onclick="addToCart('Avalakki Gojju', 149, 'qty-avalakki')" class="btn btn-whatsapp"
+                                style="width: 100%; border: none;">Add to Cart</button>
+                        </div>
+                    </div>
                 </div>
 
 
@@ -521,6 +675,30 @@
                                 class="btn btn-whatsapp" style="width: 100%; border: none;">Add to Cart</button>
                         </div>
                     </div>
+
+                    <!-- Shenga Chutney Powder -->
+                    <div class="product-card animate-on-scroll">
+                        <img src="shenga_chutney.jpg" alt="Shenga Chutney Powder" class="product-img" loading="lazy">
+                        <div class="product-info">
+                            <div>
+                                <span class="badge-natural">Tasty</span>
+                                <h3 class="product-title">Shenga Chutney Powder</h3>
+                                <p>Flavorful peanut chutney powder that pairs well with idli, dosa, and rice.</p>
+                            </div>
+                            <div style="margin-bottom: 10px;">
+                                <span style="font-size: 1.1rem; font-weight: 700; color: #2E7D32;">₹99</span> <span
+                                    style="font-size: 0.9rem; color: #757575;">(150g)</span>
+                                <br><span class="shipping-text">+ shipping charges</span>
+                            </div>
+                            <div class="quantity-wrapper">
+                                <button class="qty-btn" onclick="adjustQty('shenga', -1)">-</button>
+                                <span id="qty-shenga" class="qty-display">1</span>
+                                <button class="qty-btn" onclick="adjustQty('shenga', 1)">+</button>
+                            </div>
+                            <button onclick="addToCart('Shenga Chutney Powder (150g)', 99, 'qty-shenga')"
+                                class="btn btn-whatsapp" style="width: 100%; border: none;">Add to Cart</button>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- 5. Pickles Section -->
@@ -595,6 +773,60 @@
                                 <button class="qty-btn" onclick="adjustQty('hirlekayi-pickle', 1)">+</button>
                             </div>
                             <button onclick="addToCart('Hirlekayi Pickle (250g)', 99, 'qty-hirlekayi-pickle')"
+                                class="btn btn-whatsapp" style="width: 100%; border: none;">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 6. Skin & Hair Packs Section -->
+                <div id="cat-skincare" class="product-section">
+                    <h3 class="product-category-title">Skin & Hair Packs</h3>
+
+                    <!-- Skin Whitening Bath Powder -->
+                    <div class="product-card animate-on-scroll">
+                        <img src="skin_whitening_bath_powder.jpg" alt="Skin Whitening Bath Powder" class="product-img" loading="lazy">
+                        <div class="product-info">
+                            <div>
+                                <span class="badge-natural">Traditional</span>
+                                <h3 class="product-title">Skin Whitening Bath Powder</h3>
+                                <p>Traditional herbal bath powder for natural skin care.</p>
+                            </div>
+                            <div style="margin-bottom: 10px;">
+                                <span style="font-size: 1.1rem; font-weight: 700; color: #2E7D32;">₹199</span> <span
+                                    style="font-size: 0.9rem; color: #757575;">(200g)</span>
+                                <br><span class="shipping-text">+ shipping charges</span>
+                            </div>
+                            <div class="quantity-wrapper">
+                                <button class="qty-btn" onclick="adjustQty('skinbath', -1)">-</button>
+                                <span id="qty-skinbath" class="qty-display">1</span>
+                                <button class="qty-btn" onclick="adjustQty('skinbath', 1)">+</button>
+                            </div>
+                            <button onclick="addToCart('Skin Whitening Bath Powder (200g)', 199, 'qty-skinbath')"
+                                class="btn btn-whatsapp" style="width: 100%; border: none;">Add to Cart</button>
+                        </div>
+                    </div>
+
+                    <!-- Hair Fall Control & Hair Growth Pack -->
+                    <div class="product-card animate-on-scroll">
+                        <!-- TODO: Replace placeholder image below manually -->
+                        <img src="amla_juice.webp" alt="Hair Fall Control & Hair Growth Pack" class="product-img" loading="lazy">
+                        <div class="product-info">
+                            <div>
+                                <span class="badge-natural">Herbal Care</span>
+                                <h3 class="product-title">Hair Fall Control & Hair Growth Pack</h3>
+                                <p>Herbal care pack designed for routine hair nourishment.</p>
+                            </div>
+                            <div style="margin-bottom: 10px;">
+                                <span style="font-size: 1.1rem; font-weight: 700; color: #2E7D32;">₹199</span> <span
+                                    style="font-size: 0.9rem; color: #757575;">(150g)</span>
+                                <br><span class="shipping-text">+ shipping charges</span>
+                            </div>
+                            <div class="quantity-wrapper">
+                                <button class="qty-btn" onclick="adjustQty('hairpack', -1)">-</button>
+                                <span id="qty-hairpack" class="qty-display">1</span>
+                                <button class="qty-btn" onclick="adjustQty('hairpack', 1)">+</button>
+                            </div>
+                            <button onclick="addToCart('Hair Fall Control & Hair Growth Pack (150g)', 199, 'qty-hairpack')"
                                 class="btn btn-whatsapp" style="width: 100%; border: none;">Add to Cart</button>
                         </div>
                     </div>
@@ -1017,8 +1249,16 @@
             document.getElementById('signupView').style.display = view === 'signup' ? 'block' : 'none';
         }
 
+        // --- Password Hashing (Security) ---
+        async function hashPassword(password) {
+            const msgBuffer = new TextEncoder().encode(password);
+            const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+            return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+        }
+
         // 3. Signup Handler
-        function handleSignup(e) {
+        async function handleSignup(e) {
             e.preventDefault();
             const name = document.getElementById('signupName').value;
             const email = document.getElementById('signupEmail').value;
@@ -1044,7 +1284,10 @@
             // Generate Customer ID (e.g., RF-4821)
             const customerId = 'RF-' + Math.floor(1000 + Math.random() * 9000);
 
-            const newUser = { id: customerId, name, email, phone, password }; // Note: In real app, never save plain password!
+            // Hash the password for local storage security
+            const hashedPassword = await hashPassword(password);
+
+            const newUser = { id: customerId, name, email, phone, password: hashedPassword }; 
             usersDB.push(newUser);
             localStorage.setItem('rithvik_users_db', JSON.stringify(usersDB));
 
@@ -1053,14 +1296,15 @@
         }
 
         // 4. Login Handler
-        function handleLogin(e) {
+        async function handleLogin(e) {
             e.preventDefault();
             const identifier = document.getElementById('loginEmail').value; // email or phone
             const password = document.getElementById('loginPassword').value;
 
             const usersDB = JSON.parse(localStorage.getItem('rithvik_users_db') || '[]');
-
-            const user = usersDB.find(u => (u.email === identifier || u.phone === identifier) && u.password === password);
+            
+            const hashedPassword = await hashPassword(password);
+            const user = usersDB.find(u => (u.email === identifier || u.phone === identifier) && u.password === hashedPassword);
 
             if (user) {
                 currentUser = user;
@@ -1121,6 +1365,19 @@
                 console.error('Error loading user cart:', e);
             }
             updateCartUI();
+        }
+
+        // --- Security Utility ---
+        function escapeHTML(str) {
+            return String(str).replace(/[&<>'"]/g, 
+                tag => ({
+                    '&': '&amp;',
+                    '<': '&lt;',
+                    '>': '&gt;',
+                    "'": '&#39;',
+                    '"': '&quot;'
+                }[tag] || tag)
+            );
         }
 
         function loadCart() {
@@ -1250,7 +1507,7 @@
                 const itemTotal = item.price * item.qty;
                 grandTotal += itemTotal;
                 html += `<tr>
-                    <td>${item.name}</td>
+                    <td>${escapeHTML(item.name)}</td>
                     <td>
                         <div class="quantity-wrapper" style="margin: 0; justify-content: flex-start; font-size: 0.9rem;">
                             <button class="qty-btn" style="width: 24px; height: 24px; font-size: 1rem;" onclick="adjustCartQty(${index}, -1)">-</button>
@@ -1328,7 +1585,7 @@
                 const itemTotal = item.price * item.qty;
                 grandTotal += itemTotal;
                 html += `<div class="checkout-item-row">
-                    <span>${item.name} <small>x${item.qty}</small></span>
+                    <span>${escapeHTML(item.name)} <small>x${item.qty}</small></span>
                     <span>₹${itemTotal}</span>
                 </div>`;
             });
