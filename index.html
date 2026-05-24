@@ -38,18 +38,19 @@
                 <img src="logo_v3.webp" alt="Rithvik Foods">
                 <span>Rithvik Foods</span>
             </a>
-            <div class="menu-toggle" onclick="toggleMenu()">☰</div>
+            <div class="nav-actions">
+                <a href="#" onclick="openCart(); return false;" class="header-cart-btn" id="headerCartBtn">
+                    🛒 <span id="cart-count" class="cart-count">0</span>
+                </a>
+                <div class="menu-toggle" onclick="toggleMenu()">☰</div>
+            </div>
             <ul class="nav-links">
                 <li><a href="#home" class="nav-link">Home</a></li>
                 <li><a href="#about" class="nav-link">Our Story</a></li>
                 <li><a href="#products" class="nav-link">Shop</a></li>
                 <li><a href="catalogue.html" class="nav-link">Catalogue</a></li>
                 <li><a href="#contact" class="nav-link">Contact</a></li>
-                <li>
-                    <a href="#" onclick="openCart(); return false;" class="nav-link cart-link">
-                        🛒 <span id="cart-count" class="cart-count">0</span>
-                    </a>
-                </li>
+                
             </ul>
         </div>
     </nav>
@@ -293,7 +294,7 @@
 
                     <!-- Multigrain Atta -->
                     <div class="product-card animate-on-scroll">
-                        <img src="multigrain_atta.jpg" alt="Multigrain Atta" class="product-img" loading="lazy">
+                        <img src="multigrain_atta.webp" alt="Multigrain Atta" class="product-img" loading="lazy">
                         <div class="product-info">
                             <div>
                                 <span class="badge-natural">Nutritious</span>
@@ -317,7 +318,7 @@
 
                     <!-- Siridhanya Mix -->
                     <div class="product-card animate-on-scroll">
-                        <img src="siridhanya_mix.jpg" alt="Siridhanya Mix" class="product-img" loading="lazy">
+                        <img src="siridhanya_mix.webp" alt="Siridhanya Mix" class="product-img" loading="lazy">
                         <div class="product-info">
                             <div>
                                 <span class="badge-natural">Healthy</span>
@@ -341,7 +342,7 @@
 
                     <!-- Ragi Choco Mix -->
                     <div class="product-card animate-on-scroll">
-                        <img src="ragi_choco_mix.jpg" alt="Ragi Choco Mix" class="product-img" loading="lazy">
+                        <img src="ragi_choco_mix.webp" alt="Ragi Choco Mix" class="product-img" loading="lazy">
                         <div class="product-info">
                             <div>
                                 <span class="badge-natural">Kids Favorite</span>
@@ -365,7 +366,7 @@
 
                     <!-- Jave Godhi Flour -->
                     <div class="product-card animate-on-scroll">
-                        <img src="jave_godhi_flour.jpg" alt="Jave Godhi Flour" class="product-img" loading="lazy">
+                        <img src="jave_godhi_flour.webp" alt="Jave Godhi Flour" class="product-img" loading="lazy">
                         <div class="product-info">
                             <div>
                                 <span class="badge-natural">Wholesome</span>
@@ -521,7 +522,7 @@
 
                     <!-- Gojjavalakki Premix -->
                     <div class="product-card animate-on-scroll">
-                        <img src="gojjavalakki_premix.jpg" alt="Gojjavalakki Premix" class="product-img" loading="lazy">
+                        <img src="gojjavalakki_premix.webp" alt="Gojjavalakki Premix" class="product-img" loading="lazy">
                         <div class="product-info">
                             <div>
                                 <span class="badge-natural">Instant</span>
@@ -671,7 +672,7 @@
 
                     <!-- Shenga Chutney Powder -->
                     <div class="product-card animate-on-scroll">
-                        <img src="shenga_chutney.jpg" alt="Shenga Chutney Powder" class="product-img" loading="lazy">
+                        <img src="shenga_chutney.webp" alt="Shenga Chutney Powder" class="product-img" loading="lazy">
                         <div class="product-info">
                             <div>
                                 <span class="badge-natural">Tasty</span>
@@ -777,7 +778,7 @@
 
                     <!-- Skin Whitening Bath Powder -->
                     <div class="product-card animate-on-scroll">
-                        <img src="skin_whitening_bath_powder.jpg" alt="Skin Whitening Bath Powder" class="product-img" loading="lazy">
+                        <img src="skin_whitening_bath_powder.webp" alt="Skin Whitening Bath Powder" class="product-img" loading="lazy">
                         <div class="product-info">
                             <div>
                                 <span class="badge-natural">Traditional</span>
@@ -801,7 +802,7 @@
 
                     <!-- Hair Fall Control & Hair Growth Pack -->
                     <div class="product-card animate-on-scroll">
-                        <img src="hair_fall_hair_growth_pack.jpg" alt="Hair Fall Control & Hair Growth Pack" class="product-img" loading="lazy">
+                        <img src="hair_fall_hair_growth_pack.webp" alt="Hair Fall Control & Hair Growth Pack" class="product-img" loading="lazy">
                         <div class="product-info">
                             <div>
                                 <span class="badge-natural">Herbal Care</span>
@@ -1106,6 +1107,12 @@
                 // --- Shopping Cart Logic ---
         let cart = [];
 
+        function escapeHTML(str) {
+            const div = document.createElement('div');
+            div.appendChild(document.createTextNode(str));
+            return div.innerHTML;
+        }
+
         function saveCart() {
             localStorage.setItem('rithvik_cart', JSON.stringify(cart));
         }
@@ -1151,6 +1158,16 @@
             if (currentQty < 1) currentQty = 1; qtyEl.innerText = currentQty;
         }
 
+                function animateCartIcon() {
+            const cartBtn = document.getElementById('headerCartBtn');
+            if (cartBtn) {
+                cartBtn.classList.remove('cart-pulse');
+                // Trigger reflow to restart animation
+                void cartBtn.offsetWidth;
+                cartBtn.classList.add('cart-pulse');
+            }
+        }
+        
         function addToCart(productName, price, qtyId) {
             const qty = parseInt(document.getElementById(qtyId).innerText);
             // Check if item already exists
@@ -1164,7 +1181,7 @@
 
             saveCart(); // Save to storage
             updateCartUI();
-            alert(`Added ${qty} x ${productName} to Cart!`);
+            animateCartIcon();
 
             // Reset quantity display
             document.getElementById(qtyId).innerText = "1";
@@ -1417,6 +1434,9 @@
             // Disable button to prevent double submit
             submitBtn.disabled = true;
             submitBtn.innerText = "Processing...";
+
+            // Generate a unique Order ID
+            const orderId = 'RF-' + Date.now().toString().slice(-6) + Math.floor(Math.random() * 1000).toString().padStart(3, '0');
 
             // Get Customer ID (or Guest)
             const custId = 'GUEST';

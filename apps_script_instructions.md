@@ -14,8 +14,6 @@ Please copy the following code into your Google Apps Script project (Extensions 
 
 ```javascript
 // SHEET CONFIGURATION
-var SHEET_NAME = "Sheet1"; // Change if your sheet name is different
-
 function doPost(e) {
   var lock = LockService.getScriptLock();
   lock.tryLock(10000);
@@ -151,4 +149,6 @@ function handleCancellation(sheet, data) {
       .createTextOutput(JSON.stringify({ 'result': 'error', 'error': 'Order ID not found' }))
       .setMimeType(ContentService.MimeType.JSON);
 }
-```
+```var SHEET_NAME = "Sheet1"; // Change if your sheet name is different
+
+

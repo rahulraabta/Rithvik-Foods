@@ -1,0 +1,5 @@
+[build]
+  publish = "."
+
+# Netlify's default for static sites handles / as index.html
+# This netlify.toml ensures the build process doesn't expect a framework
