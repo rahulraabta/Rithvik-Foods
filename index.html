@@ -932,12 +932,7 @@
                     <label>Payment Method</label>
                     <div class="payment-options">
                         <label class="payment-option selected">
-                            <input type="radio" name="paymentMethod" value="cod" checked onclick="togglePayment(this)">
-                            <span class="pay-icon">💵</span>
-                            <span>Pay on Delivery</span>
-                        </label>
-                        <label class="payment-option">
-                            <input type="radio" name="paymentMethod" value="online" onclick="togglePayment(this)">
+                            <input type="radio" name="paymentMethod" value="online" checked>
                             <span class="pay-icon">📱</span>
                             <span>Online Payment (UPI)</span>
                         </label>
@@ -1267,7 +1262,7 @@
                 </tr>`;
             });
 
-            const shipping = 39;
+            const shipping = 49;
             const finalTotal = grandTotal + shipping;
 
             html += `</tbody></table>`;
@@ -1305,6 +1300,21 @@
             loadUserDetails();
 
             renderCheckoutSummary();
+
+            // Calculate total and generate inline QR code dynamically
+            let grandTotal = 0;
+            cart.forEach(item => {
+                grandTotal += item.price * item.qty;
+            });
+            const finalTotal = grandTotal + 49; // Shipping
+            generateInlineQR(finalTotal);
+
+            // Ensure payment section is visible since UPI is the default
+            const onlineSection = document.getElementById('onlinePaymentSection');
+            if (onlineSection) {
+                onlineSection.style.display = 'block';
+            }
+
             modal.style.display = 'flex';
         }
 
@@ -1323,7 +1333,7 @@
             });
 
             html += '</div>';
-            const shipping = 39;
+            const shipping = 49;
             const finalTotal = grandTotal + shipping;
 
             html += `<div class="checkout-divider"></div>`;
@@ -1357,44 +1367,6 @@
         // --- Payment & Order Logic ---
         let tempOrderDetails = null;
 
-        function togglePayment(radio) {
-            try {
-                // Update UI
-                const options = document.querySelectorAll('.payment-option');
-                if (options) {
-                    options.forEach(el => el.classList.remove('selected'));
-                    const parent = radio.closest('.payment-option');
-                    if (parent) parent.classList.add('selected');
-                }
-
-                const onlineSection = document.getElementById('onlinePaymentSection');
-                if (!onlineSection) {
-                    alert("Error: Payment section not found. Please refresh.");
-                    return;
-                }
-
-                if (radio.value === 'online') {
-                    onlineSection.style.display = 'block';
-
-                    // Calculate total
-                    let grandTotal = 0;
-                    if (cart && cart.length > 0) {
-                        cart.forEach(item => {
-                            grandTotal += item.price * item.qty;
-                        });
-                    }
-                    const finalTotal = grandTotal + 39; // Shipping
-
-                    generateInlineQR(finalTotal);
-                } else {
-                    onlineSection.style.display = 'none';
-                }
-            } catch (e) {
-                console.error("Payment Toggle Error:", e);
-                alert("Something went wrong with payment selection. Please try again.");
-            }
-        }
-
         function generateInlineQR(amount) {
             document.getElementById('inlinePayAmount').innerText = `Total: ₹${amount} `;
 
@@ -1416,20 +1388,11 @@
             const address = document.getElementById('customerAddress').value;
             const deliveryDate = document.getElementById('deliveryDate').value;
 
-            // Get selected payment method
-            const paymentMethodInput = document.querySelector('input[name="paymentMethod"]:checked');
-            const paymentMethod = paymentMethodInput ? paymentMethodInput.value : 'cod';
-
-            let paymentModeStr = 'Cash on Delivery';
-            let refId = '';
-
-            if (paymentMethod === 'online') {
-                paymentModeStr = 'Online Payment (UPI)';
-                const refInput = document.getElementById('upiRefId');
-                refId = refInput ? refInput.value.trim() : '';
-                if (refId) {
-                    paymentModeStr += ` (Ref: ${refId})`;
-                }
+            let paymentModeStr = 'Online Payment (UPI)';
+            const refInput = document.getElementById('upiRefId');
+            const refId = refInput ? refInput.value.trim() : '';
+            if (refId) {
+                paymentModeStr += ` (Ref: ${refId})`;
             }
 
             // Calculate Total (Re-calculation for verification)
@@ -1437,7 +1400,7 @@
             cart.forEach(item => {
                 grandTotal += item.price * item.qty;
             });
-            const finalTotal = grandTotal + 39; // Shipping
+            const finalTotal = grandTotal + 49; // Shipping
 
             // Save details temporarily (not strictly needed now but keeping structure)
             tempOrderDetails = {
@@ -1477,7 +1440,7 @@
                 itemListText += `${i + 1}. ${item.name} (x${item.qty}) - ₹${itemTotal}\n`;
             });
 
-            const shipping = 39;
+            const shipping = 49;
             const finalTotal = grandTotal + shipping;
 
             // --- 1. Send to Google Sheets (Backend) ---
