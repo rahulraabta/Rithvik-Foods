@@ -50,12 +50,6 @@
                         🛒 <span id="cart-count" class="cart-count">0</span>
                     </a>
                 </li>
-                <li id="nav-my-orders" style="display: none;">
-                    <a href="#" onclick="openOrdersModal(); return false;" class="nav-link">My Orders</a>
-                </li>
-                <li>
-                    <a href="#" onclick="openAuthModal(); return false;" class="nav-link" id="authLink">Login</a>
-                </li>
             </ul>
         </div>
     </nav>
@@ -974,78 +968,6 @@
         </div>
     </div>
 
-    <!-- My Orders Modal -->
-    <div id="ordersModal" class="modal">
-        <div class="modal-content">
-            <span class="close-btn" onclick="closeOrdersModal()">&times;</span>
-            <h2 class="section-title" style="font-size: 1.5rem; margin-bottom: 15px;">My Orders</h2>
-            <div id="ordersContainer" style="max-height: 400px; overflow-y: auto;">
-                <p>Loading orders...</p>
-            </div>
-        </div>
-    </div>
-
-
-
-    <!-- Login/Signup Modal -->
-    <div id="authModal" class="modal">
-        <div class="modal-content" style="max-width: 400px; text-align: center;">
-            <span class="close-btn" onclick="closeAuthModal()">&times;</span>
-
-            <!-- Login View -->
-            <div id="loginView">
-                <h2 class="section-title" style="font-size: 1.8rem; margin-bottom: 20px;">Welcome Back</h2>
-                <form onsubmit="handleLogin(event)">
-                    <div class="form-group">
-                        <label for="loginEmail">Email / Phone</label>
-                        <input type="text" id="loginEmail" required placeholder="Enter email or phone">
-                    </div>
-                    <div class="form-group">
-                        <label for="loginPassword">Password</label>
-                        <input type="password" id="loginPassword" required placeholder="Enter password">
-                    </div>
-                    <button type="submit" class="btn btn-primary" style="width: 100%;">Login</button>
-                    <p style="margin-top: 15px; font-size: 0.9rem;">
-                        New here? <a href="#" onclick="switchAuthView('signup')"
-                            style="color: var(--primary-color); font-weight: bold;">Create Account</a>
-                    </p>
-                </form>
-            </div>
-
-            <!-- Signup View -->
-            <div id="signupView" style="display: none;">
-                <h2 class="section-title" style="font-size: 1.8rem; margin-bottom: 20px;">Create Account</h2>
-                <form onsubmit="handleSignup(event)">
-                    <div class="form-group">
-                        <label for="signupName">Full Name</label>
-                        <input type="text" id="signupName" required placeholder="Your Name">
-                    </div>
-                    <div class="form-group">
-                        <label for="signupEmail">Email</label>
-                        <input type="email" id="signupEmail" required placeholder="Your Email">
-                    </div>
-                    <div class="form-group">
-                        <label for="signupPhone">Phone Number</label>
-                        <input type="tel" id="signupPhone" required placeholder="Your Mobile Number">
-                    </div>
-                    <div class="form-group">
-                        <label for="signupPassword">Password</label>
-                        <input type="password" id="signupPassword" required placeholder="Create a strong password">
-                        <small
-                            style="color: #777; font-size: 0.8rem; display: block; text-align: left; margin-top: 5px;">
-                            Must be at least 8 chars, include 1 number & 1 special char.
-                        </small>
-                    </div>
-                    <button type="submit" class="btn btn-primary" style="width: 100%;">Sign Up</button>
-                    <p style="margin-top: 15px; font-size: 0.9rem;">
-                        Already have an account? <a href="#" onclick="switchAuthView('login')"
-                            style="color: var(--primary-color); font-weight: bold;">Login</a>
-                    </p>
-                </form>
-            </div>
-        </div>
-    </div>
-
     <!-- Elite Design Script - Premium Animations -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
@@ -1092,7 +1014,7 @@
             });
 
             // CRITICAL FIX: Initialize user session and cart
-            checkSession();
+            loadCart();
         });
 
         // --- Mobile Menu Logic ---
@@ -1181,201 +1103,11 @@
             }
         }
 
-        // --- Authentication & User Logic ---
-        let currentUser = null; // Holds the logged-in user object
+                // --- Shopping Cart Logic ---
         let cart = [];
 
-        // 1. Session Management
-        function checkSession() {
-            const sessionUser = localStorage.getItem('rithvik_current_user');
-            if (sessionUser) {
-                try {
-                    currentUser = JSON.parse(sessionUser);
-                    updateAuthUI();
-                    loadUserCart(); // Load THIS user's cart
-                } catch (e) {
-                    console.error('Session parse error:', e);
-                    currentUser = null;
-                    loadCart(); // Fallback to guest cart
-                }
-            } else {
-                loadCart(); // Load guest cart
-            }
-
-            // DEFENSIVE: Ensure cart UI is always up to date
-            updateCartUI();
-        }
-
-        function updateAuthUI() {
-            const authLink = document.getElementById('authLink');
-            if (currentUser) {
-                authLink.innerText = `Hi, ${currentUser.name.split(' ')[0]}`;
-                authLink.onclick = (e) => { e.preventDefault(); confirmLogout(); };
-                document.getElementById('nav-my-orders').style.display = 'block';
-            } else {
-                authLink.innerText = 'Login';
-                authLink.onclick = (e) => { e.preventDefault(); openAuthModal(); };
-                document.getElementById('nav-my-orders').style.display = 'none';
-            }
-        }
-
-        function confirmLogout() {
-            if (confirm("Do you want to logout?")) {
-                currentUser = null;
-                localStorage.removeItem('rithvik_current_user');
-                cart = []; // Clear current view
-                updateAuthUI();
-                loadCart(); // Revert to guest cart
-                alert("Logged out successfully.");
-            }
-        }
-
-        // 2. Auth Modal Logic
-        const authModal = document.getElementById('authModal');
-
-        function openAuthModal() {
-            authModal.style.display = 'flex';
-            switchAuthView('login');
-        }
-
-        function closeAuthModal() {
-            authModal.style.display = 'none';
-        }
-
-        function switchAuthView(view) {
-            document.getElementById('loginView').style.display = view === 'login' ? 'block' : 'none';
-            document.getElementById('signupView').style.display = view === 'signup' ? 'block' : 'none';
-        }
-
-        // --- Password Hashing (Security) ---
-        async function hashPassword(password) {
-            const msgBuffer = new TextEncoder().encode(password);
-            const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
-            const hashArray = Array.from(new Uint8Array(hashBuffer));
-            return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-        }
-
-        // 3. Signup Handler
-        async function handleSignup(e) {
-            e.preventDefault();
-            const name = document.getElementById('signupName').value;
-            const email = document.getElementById('signupEmail').value;
-            const phone = document.getElementById('signupPhone').value;
-            const password = document.getElementById('signupPassword').value;
-
-            // Strong Password Validation
-            const strongPasswordRegex = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,}$/;
-            if (!strongPasswordRegex.test(password)) {
-                alert("Password is too weak!\n- At least 8 characters\n- Include a number\n- Include a special character (!@#$%)");
-                return;
-            }
-
-            // Save User (Simulated DB in LocalStorage)
-            const usersDB = JSON.parse(localStorage.getItem('rithvik_users_db') || '[]');
-
-            // Check duplicate
-            if (usersDB.find(u => u.email === email || u.phone === phone)) {
-                alert("User with this email or phone already exists!");
-                return;
-            }
-
-            // Generate Customer ID (e.g., RF-4821)
-            const customerId = 'RF-' + Math.floor(1000 + Math.random() * 9000);
-
-            // Hash the password for local storage security
-            const hashedPassword = await hashPassword(password);
-
-            const newUser = { id: customerId, name, email, phone, password: hashedPassword }; 
-            usersDB.push(newUser);
-            localStorage.setItem('rithvik_users_db', JSON.stringify(usersDB));
-
-            alert(`Account created successfully!\nYour Customer ID is: ${customerId}\nPlease Login.`);
-            switchAuthView('login');
-        }
-
-        // 4. Login Handler
-        async function handleLogin(e) {
-            e.preventDefault();
-            const identifier = document.getElementById('loginEmail').value; // email or phone
-            const password = document.getElementById('loginPassword').value;
-
-            const usersDB = JSON.parse(localStorage.getItem('rithvik_users_db') || '[]');
-            
-            const hashedPassword = await hashPassword(password);
-            const user = usersDB.find(u => (u.email === identifier || u.phone === identifier) && u.password === hashedPassword);
-
-            if (user) {
-                currentUser = user;
-                localStorage.setItem('rithvik_current_user', JSON.stringify(user)); // Start Session
-                closeAuthModal();
-                updateAuthUI();
-
-                // CRITICAL: Merge Guest Cart with User Cart
-                const guestCart = [...cart]; // Copy current guest items
-                loadUserCart(); // Load saved user items (overwrites 'cart')
-
-                // Merge
-                let mergedCount = 0;
-                guestCart.forEach(guestItem => {
-                    const existingItem = cart.find(uItem => uItem.name === guestItem.name);
-                    if (existingItem) {
-                        existingItem.qty += guestItem.qty;
-                    } else {
-                        cart.push(guestItem);
-                    }
-                    mergedCount++;
-                });
-
-                if (mergedCount > 0) {
-                    saveCart(); // Save merged state to user storage
-                    alert(`Welcome back, ${user.name}!\nWe added ${mergedCount} items from your guest cart to your account.`);
-                } else {
-                    alert(`Welcome back, ${user.name}!`);
-                }
-
-            } else {
-                alert("Invalid Email/Phone or Password.");
-            }
-        }
-
-        // 5. Data Persistence (User Specific)
         function saveCart() {
-            if (currentUser) {
-                // Save to User's specific storage
-                localStorage.setItem(`rithvik_cart_${currentUser.email}`, JSON.stringify(cart));
-            } else {
-                // Save to Guest storage
-                localStorage.setItem('rithvik_cart', JSON.stringify(cart));
-            }
-        }
-
-        function loadUserCart() {
-            if (!currentUser) return;
-            try {
-                const savedCart = localStorage.getItem(`rithvik_cart_${currentUser.email}`);
-                if (savedCart) {
-                    const parsedCart = JSON.parse(savedCart);
-                    if (Array.isArray(parsedCart)) {
-                        cart = parsedCart;
-                    }
-                }
-            } catch (e) {
-                console.error('Error loading user cart:', e);
-            }
-            updateCartUI();
-        }
-
-        // --- Security Utility ---
-        function escapeHTML(str) {
-            return String(str).replace(/[&<>'"]/g, 
-                tag => ({
-                    '&': '&amp;',
-                    '<': '&lt;',
-                    '>': '&gt;',
-                    "'": '&#39;',
-                    '"': '&quot;'
-                }[tag] || tag)
-            );
+            localStorage.setItem('rithvik_cart', JSON.stringify(cart));
         }
 
         function loadCart() {
@@ -1388,31 +1120,10 @@
                     }
                 }
             } catch (e) {
-                console.error('Error loading guest cart:', e);
+                console.error('Error loading cart:', e);
             }
             updateCartUI();
         }
-
-        // --- Shopping Cart Logic ---
-        // let cart = []; // Moved to auth logic
-
-        // Load Cart and User Details on Startup (Replaced by checkSession)
-        // document.addEventListener('DOMContentLoaded', () => {
-        // loadCart();
-        // loadUserDetails();
-        // });
-
-        // function saveCart() { // Modified above
-        // localStorage.setItem('rithvik_cart', JSON.stringify(cart));
-        // }
-
-        // function loadCart() { // Modified above
-        // const savedCart = localStorage.getItem('rithvik_cart');
-        // if (savedCart) {
-        // cart = JSON.parse(savedCart);
-        // updateCartUI();
-        // }
-        // }
 
         function saveUserDetails(name, phone, address) {
             const userDetails = { name, phone, address };
@@ -1552,23 +1263,8 @@
 
             const modal = document.getElementById('orderModal');
 
-            // NEW: Enforce Login before Checkout
-            if (!currentUser) {
-                alert("Please Login to help us track your order and save your details!");
-                openAuthModal();
-                return;
-            }
-
             // Auto-fill user details if logged in
-            if (currentUser) {
-                const nameInput = document.getElementById('customerName');
-                const phoneInput = document.getElementById('customerPhone');
-                const addrInput = document.getElementById('customerAddress');
-
-                if (nameInput && !nameInput.value && currentUser.name) nameInput.value = currentUser.name;
-                if (phoneInput && !phoneInput.value && currentUser.phone) phoneInput.value = currentUser.phone;
-                if (addrInput && !addrInput.value && currentUser.address) addrInput.value = currentUser.address;
-            }
+            loadUserDetails();
 
             renderCheckoutSummary();
             modal.style.display = 'flex';
@@ -1723,26 +1419,10 @@
             submitBtn.innerText = "Processing...";
 
             // Get Customer ID (or Guest)
-            const custId = currentUser ? currentUser.id : 'GUEST';
+            const custId = 'GUEST';
 
-            // SAVE USER DETAILS (Update DB)
-            if (currentUser) {
-                // Update local object
-                currentUser.phone = phone;
-                currentUser.address = address; // Save for next time
-
-                // Update in "Database"
-                const usersDB = JSON.parse(localStorage.getItem('rithvik_users_db') || '[]');
-                const userIndex = usersDB.findIndex(u => u.id === currentUser.id);
-                if (userIndex !== -1) {
-                    usersDB[userIndex] = currentUser;
-                    localStorage.setItem('rithvik_users_db', JSON.stringify(usersDB));
-                    localStorage.setItem('rithvik_current_user', JSON.stringify(currentUser)); // Update session
-                }
-            } else {
-                // Fallback for guest (though login is now enforced)
-                saveUserDetails(name, phone, address);
-            }
+            // SAVE USER DETAILS
+            saveUserDetails(name, phone, address);
 
             // Re-calculate totals and items
             let grandTotal = 0;
@@ -1758,22 +1438,6 @@
 
             const shipping = 39;
             const finalTotal = grandTotal + shipping;
-
-            // --- 3. Save to Local History (NEW) ---
-            // Generate a unique Order ID based on timestamp
-            const orderId = 'ORD-' + Date.now().toString().slice(-6);
-
-            const newOrder = {
-                id: orderId,
-                date: new Date().toISOString(),
-                items: cart.map(i => ({ ...i })), // Deep copy items
-                total: finalTotal,
-                status: 'Placed',
-                paymentMode: paymentMode,
-                deliveryDate: deliveryDate
-            };
-
-            saveOrderToHistory(newOrder);
 
             // --- 1. Send to Google Sheets (Backend) ---
             const scriptURL = 'https://script.google.com/macros/s/AKfycbwbAydCjIAHyEYQ8tbHZ48Qr9f6i3yATirFTwINcDry8RBmxpVXeG74Xamu0LOL0GfA/exec';
@@ -1841,129 +1505,6 @@
             submitBtn.innerText = "Confirm & Order";
 
             alert(`Order placed (${paymentMode})! Redirecting to WhatsApp...`);
-        }
-
-        // --- Orders History Logic ---
-        const ordersModal = document.getElementById('ordersModal');
-
-        function openOrdersModal() {
-            if (!currentUser) {
-                alert("Please login to view orders.");
-                return;
-            }
-            renderOrders();
-            ordersModal.style.display = 'flex';
-        }
-
-        function closeOrdersModal() {
-            ordersModal.style.display = 'none';
-        }
-
-        // Close orders modal on outside click
-        window.addEventListener('click', function (event) {
-            if (event.target == ordersModal) {
-                closeOrdersModal();
-            }
-        });
-
-        function saveOrderToHistory(orderData) {
-            if (!currentUser) return;
-
-            const storageKey = `rithvik_orders_${currentUser.email}`;
-            const orders = JSON.parse(localStorage.getItem(storageKey) || '[]');
-
-            // Add new order to top
-            orders.unshift(orderData);
-
-            localStorage.setItem(storageKey, JSON.stringify(orders));
-        }
-
-        function renderOrders() {
-            if (!currentUser) return;
-            const container = document.getElementById('ordersContainer');
-            const storageKey = `rithvik_orders_${currentUser.email}`;
-            const orders = JSON.parse(localStorage.getItem(storageKey) || '[]');
-
-            if (orders.length === 0) {
-                container.innerHTML = '<p style="text-align: center; color: #666;">No orders found.</p>';
-                return;
-            }
-
-            let html = '';
-            orders.forEach(order => {
-                const orderDate = new Date(order.date);
-                const now = new Date();
-                const diffHours = (now - orderDate) / (1000 * 60 * 60);
-                const canCancel = diffHours < 48 && order.status !== 'Cancelled';
-
-                let statusColor = '#2E7D32'; // Green for Placed
-                if (order.status === 'Cancelled') statusColor = '#D32F2F';
-
-                html += `
-                    <div style="border: 1px solid #eee; padding: 15px; margin-bottom: 15px; border-radius: 8px; background: #fff;">
-                        <div style="display: flex; justify-content: space-between; margin-bottom: 10px; border-bottom: 1px solid #eee; padding-bottom: 5px;">
-                            <span style="font-weight: bold; font-size: 0.9rem;">#${order.id}</span>
-                            <span style="font-size: 0.8rem; color: #757575;">${orderDate.toLocaleDateString()}</span>
-                        </div>
-                        <div style="margin-bottom: 10px;">
-                            ${order.items.map(item => `
-                                <div style="display: flex; justify-content: space-between; font-size: 0.9rem;">
-                                    <span>${item.name} <small>x${item.qty}</small></span>
-                                    <span>₹${item.price * item.qty}</span>
-                                </div>
-                            `).join('')}
-                        </div>
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px; padding-top: 10px; border-top: 1px dashed #eee;">
-                            <span style="font-weight: bold;">Total: ₹${order.total}</span>
-                            <span style="color: ${statusColor}; font-weight: 500; font-size: 0.9rem;">${order.status}</span>
-                        </div>
-                        ${canCancel ? `
-                            <button onclick="cancelOrder('${order.id}')" style="width: 100%; margin-top: 10px; background: #FFEBEE; color: #D32F2F; border: 1px solid #D32F2F; padding: 8px; border-radius: 4px; cursor: pointer;">
-                                Cancel Order
-                            </button>
-                        ` : ''}
-                    </div>
-                `;
-            });
-
-            container.innerHTML = html;
-        }
-
-        function cancelOrder(orderId) {
-            if (!confirm("Are you sure you want to cancel this order?")) return;
-
-            const storageKey = `rithvik_orders_${currentUser.email}`;
-            const orders = JSON.parse(localStorage.getItem(storageKey) || '[]');
-
-            const orderIndex = orders.findIndex(o => o.id === orderId);
-            if (orderIndex !== -1) {
-                // Update Local Status
-                orders[orderIndex].status = 'Cancelled';
-                localStorage.setItem(storageKey, JSON.stringify(orders));
-
-                // Re-render
-                renderOrders();
-
-                // Notify via WhatsApp
-                const order = orders[orderIndex];
-
-                // --- Sync Cancellation with Google Sheet ---
-                const scriptURL = 'https://script.google.com/macros/s/AKfycbwbAydCjIAHyEYQ8tbHZ48Qr9f6i3yATirFTwINcDry8RBmxpVXeG74Xamu0LOL0GfA/exec';
-
-                fetch(scriptURL, {
-                    method: 'POST',
-                    mode: 'no-cors',
-                    headers: { 'Content-Type': 'text/plain' },
-                    body: JSON.stringify({
-                        action: 'cancel',
-                        orderId: order.id
-                    })
-                }).catch(e => console.error("Cancellation Sync Error:", e));
-
-                const msg = `Hello, I would like to CANCEL my order.\n\nOrder ID: ${order.id}\nDate: ${new Date(order.date).toLocaleDateString()}\nTotal: ₹${order.total}\n\nPlease confirm cancellation.`;
-
-                window.open(`https://wa.me/918431329733?text=${encodeURIComponent(msg)}`, '_blank');
-            }
         }
 
         // =====================================================
