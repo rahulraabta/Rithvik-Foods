@@ -914,7 +914,7 @@
 
                 <div class="form-group">
                     <label for="customerPhone">Phone Number</label>
-                    <input type="tel" id="customerPhone" required placeholder="Enter your mobile number">
+                    <input type="tel" id="customerPhone" required pattern="[6-9][0-9]{9}" maxlength="10" placeholder="10-digit mobile number" title="Please enter a valid 10-digit Indian mobile number starting with 6, 7, 8, or 9">
                 </div>
 
                 <div class="form-group">
@@ -1016,6 +1016,27 @@
 
             // CRITICAL FIX: Initialize user session and cart
             loadCart();
+
+            // Set minimum delivery date to tomorrow dynamically based on local timezone
+            const tomorrow = new Date();
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            const yyyy = tomorrow.getFullYear();
+            const mm = String(tomorrow.getMonth() + 1).padStart(2, '0');
+            const dd = String(tomorrow.getDate()).padStart(2, '0');
+            const tomorrowStr = `${yyyy}-${mm}-${dd}`;
+            
+            const deliveryDateInput = document.getElementById('deliveryDate');
+            if (deliveryDateInput) {
+                deliveryDateInput.min = tomorrowStr;
+            }
+
+            // Enforce numeric-only input on the phone number field
+            const phoneInput = document.getElementById('customerPhone');
+            if (phoneInput) {
+                phoneInput.addEventListener('input', function() {
+                    this.value = this.value.replace(/\D/g, '');
+                });
+            }
         });
 
         // --- Mobile Menu Logic ---
@@ -1433,7 +1454,7 @@
 
             // Disable button to prevent double submit
             submitBtn.disabled = true;
-            submitBtn.innerText = "Processing...";
+            submitBtn.innerHTML = '<span class="spinner"></span> Processing...';
 
             // Generate a unique Order ID
             const orderId = 'RF-' + Date.now().toString().slice(-6) + Math.floor(Math.random() * 1000).toString().padStart(3, '0');
