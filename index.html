@@ -263,7 +263,18 @@
                                 <h3 class="product-title">ABC Malt Powder</h3>
                                 <p>Apple Beetroot Carrot natural health mix.</p>
                             </div>
-                            <span class="btn btn-disabled">Available Soon</span>
+                            <div style="margin-bottom: 10px;">
+                                <span style="font-size: 1.1rem; font-weight: 700; color: #2E7D32;">₹249</span> <span
+                                    style="font-size: 0.9rem; color: #757575;">(250g)</span>
+                                <br><span class="shipping-text">+ shipping charges</span>
+                            </div>
+                            <div class="quantity-wrapper">
+                                <button class="qty-btn" onclick="adjustQty('abcmalt', -1)">-</button>
+                                <span id="qty-abcmalt" class="qty-display">1</span>
+                                <button class="qty-btn" onclick="adjustQty('abcmalt', 1)">+</button>
+                            </div>
+                            <button onclick="addToCart('ABC Malt Powder (250g)', 249, 'qty-abcmalt')"
+                                class="btn btn-whatsapp" style="width: 100%; border: none;">Add to Cart</button>
                         </div>
                     </div>
 
