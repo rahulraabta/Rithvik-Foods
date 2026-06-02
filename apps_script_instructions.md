@@ -25,7 +25,7 @@ The script automatically sets up **3 separate sheets (tables)** inside your Goog
 
 1. **`Orders` Table (Order Summaries):**
    * Storing high-level metadata of each order (one row per order).
-   * **Columns:** `Date`, `Order ID`, `Customer ID`, `Customer Name`, `Phone`, `Address`, `Delivery Date`, `Subtotal`, `Shipping`, `Total`, `Item Count`, `Payment Mode`, `Order Status`
+   * **Columns:** `Date`, `Order ID`, `Customer ID`, `Customer Name`, `Phone`, `Address`, `Delivery Date`, `Subtotal`, `Shipping`, `Total`, `Item Count`, `Payment Mode`, `Order Status`, `Cancel Token`
 
 2. **`OrderItems` Table (Line Items Breakdown):**
    * Storing individual items inside each order (one row per purchased item). Perfect for inventory checking and packing.
@@ -104,7 +104,7 @@ function handleOrderCreation(doc, data) {
   var cartItems = data.cartItems || [];
 
   // 1. Save to "Orders" Sheet
-  var ordersHeaders = ['Date', 'Order ID', 'Customer ID', 'Customer Name', 'Phone', 'Address', 'Delivery Date', 'Subtotal', 'Shipping', 'Total', 'Item Count', 'Payment Mode', 'Order Status'];
+  var ordersHeaders = ['Date', 'Order ID', 'Customer ID', 'Customer Name', 'Phone', 'Address', 'Delivery Date', 'Subtotal', 'Shipping', 'Total', 'Item Count', 'Payment Mode', 'Order Status', 'Cancel Token'];
   var ordersSheet = getOrCreateSheet(doc, 'Orders', ordersHeaders);
   
   var ordersRow = [
@@ -120,7 +120,8 @@ function handleOrderCreation(doc, data) {
     total,
     itemCount,
     paymentMode,
-    orderStatus
+    orderStatus,
+    data.cancelToken || ''
   ];
   ordersSheet.appendRow(ordersRow);
 
@@ -203,9 +204,10 @@ function handleOrderCreation(doc, data) {
 
 function handleCancellation(doc, data) {
   var orderId = data.orderId;
-  if (!orderId) {
+  var cancelToken = data.cancelToken;
+  if (!orderId || !cancelToken) {
     return ContentService
-      .createTextOutput(JSON.stringify({ 'result': 'error', 'error': 'No Order ID provided' }))
+      .createTextOutput(JSON.stringify({ 'result': 'error', 'error': 'Order ID or Cancel Token missing' }))
       .setMimeType(ContentService.MimeType.JSON);
   }
 
@@ -221,14 +223,16 @@ function handleCancellation(doc, data) {
   
   var orderIdColIndex = -1;
   var statusColIndex = -1;
+  var cancelTokenColIndex = -1;
 
   for (var i = 0; i < headers.length; i++) {
     var h = headers[i].toString().toLowerCase();
     if (h === 'order id') orderIdColIndex = i;
     if (h === 'order status') statusColIndex = i;
+    if (h === 'cancel token') cancelTokenColIndex = i;
   }
 
-  if (orderIdColIndex === -1 || statusColIndex === -1) {
+  if (orderIdColIndex === -1 || statusColIndex === -1 || cancelTokenColIndex === -1) {
      return ContentService
       .createTextOutput(JSON.stringify({ 'result': 'error', 'error': 'Required columns not found' }))
       .setMimeType(ContentService.MimeType.JSON);
@@ -236,6 +240,13 @@ function handleCancellation(doc, data) {
 
   for (var i = 1; i < values.length; i++) {
     if (values[i][orderIdColIndex].toString() === orderId.toString()) {
+      // Verify cancel token matches
+      if (values[i][cancelTokenColIndex].toString() !== cancelToken.toString()) {
+        return ContentService
+          .createTextOutput(JSON.stringify({ 'result': 'error', 'error': 'Unauthorized: Cancel Token mismatch' }))
+          .setMimeType(ContentService.MimeType.JSON);
+      }
+
       var rowIndex = i + 1;
       ordersSheet.getRange(rowIndex, statusColIndex + 1).setValue('Cancelled');
 

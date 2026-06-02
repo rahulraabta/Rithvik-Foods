@@ -1499,9 +1499,13 @@
             // --- 1. Send to Google Sheets (Backend) ---
             const scriptURL = 'https://script.google.com/macros/s/AKfycbwbAydCjIAHyEYQ8tbHZ48Qr9f6i3yATirFTwINcDry8RBmxpVXeG74Xamu0LOL0GfA/exec';
 
+            // Generate a secure, unique cancellation token for this specific order
+            const cancelToken = crypto.getRandomValues(new Uint32Array(4)).join('-');
+
             const orderData = {
                 action: 'create', // Start Action
                 orderId: orderId, // Include ID
+                cancelToken: cancelToken,
                 date: new Date().toLocaleString(),
                 customerId: custId,
                 name: name,
