@@ -1334,37 +1334,77 @@
         function renderCheckoutSummary() {
             const summaryContainer = document.getElementById('checkoutSummary');
             let grandTotal = 0;
-            let html = '<div class="checkout-items">';
+
+            // Clear existing content securely
+            summaryContainer.textContent = '';
+
+            const itemsContainer = document.createElement('div');
+            itemsContainer.className = 'checkout-items';
 
             cart.forEach(item => {
                 const itemTotal = item.price * item.qty;
                 grandTotal += itemTotal;
-                html += `<div class="checkout-item-row">
-                    <span>${escapeHTML(item.name)} <small>x${item.qty}</small></span>
-                    <span>₹${itemTotal}</span>
-                </div>`;
+                const itemRow = document.createElement('div');
+                itemRow.className = 'checkout-item-row';
+
+                const nameSpan = document.createElement('span');
+                nameSpan.textContent = item.name + ' ';
+                const qtySmall = document.createElement('small');
+                qtySmall.textContent = 'x' + item.qty;
+                nameSpan.appendChild(qtySmall);
+
+                const priceSpan = document.createElement('span');
+                priceSpan.textContent = '₹' + itemTotal;
+
+                itemRow.appendChild(nameSpan);
+                itemRow.appendChild(priceSpan);
+                itemsContainer.appendChild(itemRow);
             });
 
-            html += '</div>';
+            summaryContainer.appendChild(itemsContainer);
+
             const shipping = 49;
             const finalTotal = grandTotal + shipping;
 
-            html += `<div class="checkout-divider"></div>`;
-            html += `<div class="checkout-item-row" style="color: #666;">
-                <span>Subtotal</span>
-                <span>₹${grandTotal}</span>
-            </div>`;
-            html += `<div class="checkout-item-row" style="color: #666;">
-                <span>Shipping Charges</span>
-                <span>₹${shipping}</span>
-            </div>`;
-            html += `<div class="checkout-divider"></div>`;
-            html += `<div class="checkout-total">
-                <span>Total Amount</span>
-                <span>₹${finalTotal}</span>
-            </div>`;
+            const divider1 = document.createElement('div');
+            divider1.className = 'checkout-divider';
+            summaryContainer.appendChild(divider1);
 
-            summaryContainer.innerHTML = html;
+            const subtotalRow = document.createElement('div');
+            subtotalRow.className = 'checkout-item-row';
+            subtotalRow.style.color = '#666';
+            const subtotalLabel = document.createElement('span');
+            subtotalLabel.textContent = 'Subtotal';
+            const subtotalValue = document.createElement('span');
+            subtotalValue.textContent = '₹' + grandTotal;
+            subtotalRow.appendChild(subtotalLabel);
+            subtotalRow.appendChild(subtotalValue);
+            summaryContainer.appendChild(subtotalRow);
+
+            const shippingRow = document.createElement('div');
+            shippingRow.className = 'checkout-item-row';
+            shippingRow.style.color = '#666';
+            const shippingLabel = document.createElement('span');
+            shippingLabel.textContent = 'Shipping Charges';
+            const shippingValue = document.createElement('span');
+            shippingValue.textContent = '₹' + shipping;
+            shippingRow.appendChild(shippingLabel);
+            shippingRow.appendChild(shippingValue);
+            summaryContainer.appendChild(shippingRow);
+
+            const divider2 = document.createElement('div');
+            divider2.className = 'checkout-divider';
+            summaryContainer.appendChild(divider2);
+
+            const totalRow = document.createElement('div');
+            totalRow.className = 'checkout-total';
+            const totalLabel = document.createElement('span');
+            totalLabel.textContent = 'Total Amount';
+            const totalValue = document.createElement('span');
+            totalValue.textContent = '₹' + finalTotal;
+            totalRow.appendChild(totalLabel);
+            totalRow.appendChild(totalValue);
+            summaryContainer.appendChild(totalRow);
         }
 
         function closeOrderModal() {
