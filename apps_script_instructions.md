@@ -1,119 +1,224 @@
-# Google Apps Script Code
+# Google Apps Script Code for Multi-Table Order Processing
 
 Please copy the following code into your Google Apps Script project (Extensions > Apps Script in your Google Sheet).
 
-**IMPORTANT:**
-1.  After pasting, Save the project.
-2.  Click **Deploy** > **New deployment**.
-3.  Select type: **Web app**.
-4.  Execute as: **Me**.
-5.  Who has access: **Anyone** (this is critical for the website to send data).
-6.  Click **Deploy** and copy the **Web App URL**.
-7.  **Ensure your Google Sheet HEADER ROW (Row 1) has these exact columns:**
-    `Date`, `Order ID`, `Customer ID`, `Name`, `Phone`, `Address`, `City`, `State`, `Zip`, `Delivery Date`, `Items`, `Total`, `Item Count`, `Payment Mode`, `Order Status`
+### **Deployment Instructions:**
+1.  Open your Google Sheet.
+2.  Click **Extensions** > **Apps Script**.
+3.  Delete any existing code in the editor and paste the code below.
+4.  Click **Save** (💾 icon).
+5.  Click **Deploy** > **New deployment**.
+6.  Click the gear icon (Select type) and select **Web app**.
+7.  Fill in the configuration details:
+    *   **Description:** `Rithvik Foods Multi-Table Orders API`
+    *   **Execute as:** `Me` (your account)
+    *   **Who has access:** `Anyone` (this allows the website to send order details anonymously)
+8.  Click **Deploy**.
+9.  Copy the **Web App URL** (ends with `/exec`). It should match this URL format:
+    `https://script.google.com/macros/s/AKfycbwbAydCjIAHyEYQ8tbHZ48Qr9f6i3yATirFTwINcDry8RBmxpVXeG74Xamu0LOL0GfA/exec`
+
+---
+
+## 📊 How the Data is Organized in the Google Sheet
+
+The script automatically sets up **3 separate sheets (tables)** inside your Google Spreadsheet to organize order data clean and professionally:
+
+1. **`Orders` Table (Order Summaries):**
+   * Storing high-level metadata of each order (one row per order).
+   * **Columns:** `Date`, `Order ID`, `Customer ID`, `Customer Name`, `Phone`, `Address`, `Delivery Date`, `Subtotal`, `Shipping`, `Total`, `Item Count`, `Payment Mode`, `Order Status`
+
+2. **`OrderItems` Table (Line Items Breakdown):**
+   * Storing individual items inside each order (one row per purchased item). Perfect for inventory checking and packing.
+   * **Columns:** `Date`, `Order ID`, `Item Name`, `Quantity`, `Unit Price`, `Item Total`
+
+3. **`Customers` Table (Customer CRM):**
+   * Storing customer lists with order histories automatically matched by phone number. Perfect for customer tracking, loyalty programs, and address histories.
+   * **Columns:** `Customer ID`, `Customer Name`, `Phone`, `Address`, `Last Order Date`, `Total Orders`, `Total Spent`
+
+---
+
+## 🛠️ Google Apps Script Code
 
 ```javascript
-// SHEET CONFIGURATION
+// Rithvik Foods Order Processing Backend
+// Auto-initializes sheets and columns if they do not exist.
+
 function doPost(e) {
   var lock = LockService.getScriptLock();
   lock.tryLock(10000);
 
   try {
     var doc = SpreadsheetApp.getActiveSpreadsheet();
-    var sheet = doc.getSheetByName(SHEET_NAME);
-
-    // Parse the incoming data
+    
+    // Parse the incoming order data
     var data = JSON.parse(e.postData.contents);
     var action = data.action; // 'create' or 'cancel'
 
     if (action === 'cancel') {
-      return handleCancellation(sheet, data);
+      return handleCancellation(doc, data);
     } else {
-      return handleOrderCreation(sheet, data);
+      return handleOrderCreation(doc, data);
     }
 
-  } catch (e) {
+  } catch (err) {
     return ContentService
-      .createTextOutput(JSON.stringify({ 'result': 'error', 'error': e }))
+      .createTextOutput(JSON.stringify({ 'result': 'error', 'error': err.toString() }))
       .setMimeType(ContentService.MimeType.JSON);
   } finally {
     lock.releaseLock();
   }
 }
 
-function handleOrderCreation(sheet, data) {
-  var headers = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0];
-  var nextRow = sheet.getLastRow() + 1;
-  var newRow = [];
+// Function to initialize sheet with headers if it does not exist
+function getOrCreateSheet(doc, sheetName, headers) {
+  var sheet = doc.getSheetByName(sheetName);
+  if (!sheet) {
+    sheet = doc.insertSheet(sheetName);
+    sheet.appendRow(headers);
+    
+    // Style headers
+    var headerRange = sheet.getRange(1, 1, 1, headers.length);
+    headerRange.setFontWeight("bold");
+    headerRange.setBackground("#E8F5E9"); // Very light mint green
+    headerRange.setHorizontalAlignment("center");
+    headerRange.setBorder(true, true, true, true, true, true);
+    sheet.setFrozenRows(1);
+  }
+  return sheet;
+}
 
-  // Map data to headers
-  // We look for specific header names and map the data accordingly
-  for (var i = 0; i < headers.length; i++) {
-    var header = headers[i].toString().toLowerCase(); // Normalize header name
+function handleOrderCreation(doc, data) {
+  var dateStr = data.date || new Date().toLocaleString();
+  var orderId = data.orderId || '';
+  var custId = data.customerId || 'GUEST';
+  var name = data.name || '';
+  var phone = data.phone || '';
+  var address = data.address || '';
+  var deliveryDate = data.deliveryDate || '';
+  var subtotal = parseFloat(data.subtotal) || 0;
+  var shipping = parseFloat(data.shipping) || 0;
+  var total = parseFloat(data.total) || 0;
+  var itemCount = parseInt(data.itemCount) || 0;
+  var paymentMode = data.paymentMode || '';
+  var orderStatus = data.orderStatus || 'Placed';
+  var cartItems = data.cartItems || [];
 
-    switch (header) {
-      case 'date':
-        newRow.push(data.date || new Date());
+  // 1. Save to "Orders" Sheet
+  var ordersHeaders = ['Date', 'Order ID', 'Customer ID', 'Customer Name', 'Phone', 'Address', 'Delivery Date', 'Subtotal', 'Shipping', 'Total', 'Item Count', 'Payment Mode', 'Order Status'];
+  var ordersSheet = getOrCreateSheet(doc, 'Orders', ordersHeaders);
+  
+  var ordersRow = [
+    dateStr,
+    orderId,
+    custId,
+    name,
+    "'" + phone, // Force text format to prevent stripping leading zeroes or formatting as scientific notation
+    address,
+    deliveryDate,
+    subtotal,
+    shipping,
+    total,
+    itemCount,
+    paymentMode,
+    orderStatus
+  ];
+  ordersSheet.appendRow(ordersRow);
+
+  // 2. Save to "OrderItems" Sheet
+  var itemsHeaders = ['Date', 'Order ID', 'Item Name', 'Quantity', 'Unit Price', 'Item Total'];
+  var itemsSheet = getOrCreateSheet(doc, 'OrderItems', itemsHeaders);
+  
+  if (cartItems && cartItems.length > 0) {
+    for (var i = 0; i < cartItems.length; i++) {
+      var item = cartItems[i];
+      var itemRow = [
+        dateStr,
+        orderId,
+        item.name || '',
+        parseInt(item.qty) || 0,
+        parseFloat(item.price) || 0,
+        parseFloat(item.total) || 0
+      ];
+      itemsSheet.appendRow(itemRow);
+    }
+  } else if (data.items) {
+    // Fallback if structured cartItems is not passed
+    itemsSheet.appendRow([
+      dateStr,
+      orderId,
+      data.items.trim(),
+      itemCount,
+      total - shipping,
+      total - shipping
+    ]);
+  }
+
+  // 3. Save / Update "Customers" Sheet
+  var customersHeaders = ['Customer ID', 'Customer Name', 'Phone', 'Address', 'Last Order Date', 'Total Orders', 'Total Spent'];
+  var customersSheet = getOrCreateSheet(doc, 'Customers', customersHeaders);
+  
+  var customersData = customersSheet.getDataRange().getValues();
+  var customerRowIndex = -1;
+  
+  // Find customer by phone match (strip non-digits for comparison)
+  var targetPhone = phone.toString().replace(/\D/g, '');
+  if (targetPhone !== '') {
+    for (var i = 1; i < customersData.length; i++) {
+      var storedPhone = customersData[i][2].toString().replace(/\D/g, '');
+      if (storedPhone === targetPhone) {
+        customerRowIndex = i + 1; // Row numbers are 1-based, array indices are 0-based
         break;
-      case 'order id':
-        newRow.push(data.orderId || '');
-        break;
-      case 'customer id':
-        newRow.push(data.customerId || '');
-        break;
-      case 'name':
-        newRow.push(data.name || '');
-        break;
-      case 'phone':
-        newRow.push("'" + data.phone || ''); // Force string for phone
-        break;
-      case 'address':
-        newRow.push(data.address || '');
-        break;
-      case 'delivery date':
-        newRow.push(data.deliveryDate || '');
-        break;
-      case 'items':
-        newRow.push(data.items || '');
-        break;
-      case 'total':
-        newRow.push(data.total || 0);
-        break;
-      case 'item count':
-        newRow.push(data.itemCount || 0);
-        break;
-      case 'payment mode':
-        newRow.push(data.paymentMode || '');
-        break;
-      case 'order status':
-        newRow.push('Placed'); // Default status
-        break;
-      default:
-        newRow.push(''); // Empty string for unknown columns
+      }
     }
   }
 
-  sheet.appendRow(newRow);
+  if (customerRowIndex !== -1) {
+    // Update existing customer stats
+    var currentOrders = parseInt(customersData[customerRowIndex - 1][5]) || 0;
+    var currentSpent = parseFloat(customersData[customerRowIndex - 1][6]) || 0;
+    
+    customersSheet.getRange(customerRowIndex, 2).setValue(name); // Refresh name
+    customersSheet.getRange(customerRowIndex, 4).setValue(address); // Refresh address
+    customersSheet.getRange(customerRowIndex, 5).setValue(dateStr); // Update last active date
+    customersSheet.getRange(customerRowIndex, 6).setValue(currentOrders + 1); // Increment count
+    customersSheet.getRange(customerRowIndex, 7).setValue(currentSpent + total); // Accumulate spending
+  } else {
+    // Add new customer entry
+    var newCustomerRow = [
+      custId,
+      name,
+      "'" + phone,
+      address,
+      dateStr,
+      1,
+      total
+    ];
+    customersSheet.appendRow(newCustomerRow);
+  }
 
   return ContentService
-    .createTextOutput(JSON.stringify({ 'result': 'success', 'row': nextRow }))
+    .createTextOutput(JSON.stringify({ 'result': 'success', 'orderId': orderId }))
     .setMimeType(ContentService.MimeType.JSON);
 }
 
-function handleCancellation(sheet, data) {
+function handleCancellation(doc, data) {
   var orderId = data.orderId;
-  
   if (!orderId) {
     return ContentService
       .createTextOutput(JSON.stringify({ 'result': 'error', 'error': 'No Order ID provided' }))
       .setMimeType(ContentService.MimeType.JSON);
   }
 
-  var dataRange = sheet.getDataRange();
-  var values = dataRange.getValues();
+  var ordersSheet = doc.getSheetByName('Orders');
+  if (!ordersSheet) {
+    return ContentService
+      .createTextOutput(JSON.stringify({ 'result': 'error', 'error': 'Orders sheet not found' }))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+
+  var values = ordersSheet.getDataRange().getValues();
   var headers = values[0];
   
-  // Find "Order ID" column index
   var orderIdColIndex = -1;
   var statusColIndex = -1;
 
@@ -125,19 +230,14 @@ function handleCancellation(sheet, data) {
 
   if (orderIdColIndex === -1 || statusColIndex === -1) {
      return ContentService
-      .createTextOutput(JSON.stringify({ 'result': 'error', 'error': 'Columns not found' }))
+      .createTextOutput(JSON.stringify({ 'result': 'error', 'error': 'Required columns not found' }))
       .setMimeType(ContentService.MimeType.JSON);
   }
 
-  // Find the row with the matching Order ID
-  // Start from row 1 (excluding header row 0)
   for (var i = 1; i < values.length; i++) {
     if (values[i][orderIdColIndex].toString() === orderId.toString()) {
-      // Row found (i + 1 because sheets are 1-indexed)
       var rowIndex = i + 1;
-      
-      // Update status
-      sheet.getRange(rowIndex, statusColIndex + 1).setValue('Cancelled');
+      ordersSheet.getRange(rowIndex, statusColIndex + 1).setValue('Cancelled');
 
       return ContentService
         .createTextOutput(JSON.stringify({ 'result': 'success', 'message': 'Order cancelled' }))
@@ -145,10 +245,8 @@ function handleCancellation(sheet, data) {
     }
   }
 
-   return ContentService
-      .createTextOutput(JSON.stringify({ 'result': 'error', 'error': 'Order ID not found' }))
-      .setMimeType(ContentService.MimeType.JSON);
+  return ContentService
+    .createTextOutput(JSON.stringify({ 'result': 'error', 'error': 'Order ID not found' }))
+    .setMimeType(ContentService.MimeType.JSON);
 }
-```var SHEET_NAME = "Sheet1"; // Change if your sheet name is different
-
-
+```

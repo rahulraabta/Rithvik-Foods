@@ -1467,6 +1467,14 @@
                 address: address,
                 deliveryDate: deliveryDate,
                 items: itemListText,
+                cartItems: cart.map(item => ({
+                    name: item.name,
+                    price: item.price,
+                    qty: item.qty,
+                    total: item.price * item.qty
+                })),
+                subtotal: grandTotal,
+                shipping: shipping,
                 total: finalTotal,
                 itemCount: itemCount,
                 paymentMode: paymentMode,
