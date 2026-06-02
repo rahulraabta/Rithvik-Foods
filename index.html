@@ -935,10 +935,7 @@
                     <textarea id="customerAddress" required placeholder="Full address with pincode"></textarea>
                 </div>
 
-                <div class="form-group">
-                    <label for="deliveryDate">Preferred Delivery Date</label>
-                    <input type="date" id="deliveryDate" required>
-                </div>
+
 
                 <!-- Payment Method Selection -->
                 <div class="form-group">
@@ -1025,18 +1022,7 @@
             // CRITICAL FIX: Initialize user session and cart
             loadCart();
 
-            // Set minimum delivery date to tomorrow dynamically based on local timezone
-            const tomorrow = new Date();
-            tomorrow.setDate(tomorrow.getDate() + 1);
-            const yyyy = tomorrow.getFullYear();
-            const mm = String(tomorrow.getMonth() + 1).padStart(2, '0');
-            const dd = String(tomorrow.getDate()).padStart(2, '0');
-            const tomorrowStr = `${yyyy}-${mm}-${dd}`;
-            
-            const deliveryDateInput = document.getElementById('deliveryDate');
-            if (deliveryDateInput) {
-                deliveryDateInput.min = tomorrowStr;
-            }
+
 
             // Enforce numeric-only input on the phone number field
             const phoneInput = document.getElementById('customerPhone');
@@ -1439,7 +1425,6 @@
             const name = document.getElementById('customerName').value;
             const phone = document.getElementById('customerPhone').value;
             const address = document.getElementById('customerAddress').value;
-            const deliveryDate = document.getElementById('deliveryDate').value;
 
             let paymentModeStr = 'Online Payment (UPI)';
             const refInput = document.getElementById('upiRefId');
@@ -1457,7 +1442,7 @@
 
             // Save details temporarily (not strictly needed now but keeping structure)
             tempOrderDetails = {
-                name, phone, address, deliveryDate,
+                name, phone, address,
                 total: finalTotal
             };
 
@@ -1465,7 +1450,7 @@
         }
 
         function processOrder(paymentMode) {
-            const { name, phone, address, deliveryDate } = tempOrderDetails;
+            const { name, phone, address } = tempOrderDetails;
             const submitBtn = document.getElementById('submitBtn');
 
             // Disable button to prevent double submit
@@ -1511,7 +1496,6 @@
                 name: name,
                 phone: phone,
                 address: address,
-                deliveryDate: deliveryDate,
                 items: itemListText,
                 cartItems: cart.map(item => ({
                     name: item.name,
@@ -1552,8 +1536,7 @@
             message += `*Customer Details:*\n`;
             message += `Name: ${name}\n`;
             message += `Phone: ${phone}\n`;
-            message += `Address: ${address}\n`;
-            message += `Pref. Delivery: ${deliveryDate}`;
+            message += `Address: ${address}`;
 
             // Append Order ID to WhatsApp message
             message = `*New Order Request* (ID: ${orderId})\n` + message.substring(message.indexOf('\n') + 1); // Replace first line or append ID
